@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import { Select, Typography, Row, Col, Avatar, Card } from 'antd'
 import moment from 'moment'
 
+import { useGetCryptosQuery } from '../services/cryptoApi'
 import { useGetCryptoNewsQuery } from '../services/cryptoNewsApi'
 
 const { Text, Title } = Typography
@@ -12,27 +13,29 @@ const demoImage = 'https://www.bing.com/th?id=OVFT.mpzuVZnv8dwIMRfQGPbOPC&pid=Ne
 const News = ({ simplified }) => {
     const [newsCategory, setnewsCategory] = useState('Cryptocurrency')
     const { data: cryptoNews } = useGetCryptoNewsQuery({ newsCategory, count: simplified ? 6 : 18})
-    console.log(cryptoNews)
+    const { data } = useGetCryptosQuery(100)
+
 
     if(!cryptoNews?.value) return 'Loading...'
 
     return (
         <div>
+            {!simplified && (
+                <Col spam={24} style={{ marginBottom: '1rem' }}>
+                    <Select
+                        showSearch
+                        className="select-news"
+                        placeholder="Select a coin"
+                        optionFilterProp="children"
+                        onChange={(value) => setnewsCategory(value)}
+                        filterOption={(input, option) => option.children.toLowerCase().indexOf(input.toLowerCase()) > 0 }
+                    >
+                        <Option value="cryptocurrency">Cryptocurrency</Option>
+                        {data?.data?.coins.map(coin => <Option value={coin.name}>{coin.name}</Option>)}
+                    </Select>
+                </Col>
+            )}
             <Row gutter={[ 24, 24]}>
-                {!simplified && (
-                    <Col spam={24}>
-                        <Select
-                            showSearch
-                            className="select-news"
-                            placeholder="Select a coin"
-                            optionFilterProp="children"
-                            onChange={(value) => console.log(value)}
-                            filterOption={(input, option) => option.children.toLowerCase().indexOf(input.toLowerCase()) > 0 }
-                        >
-                            <Option value="cryptocurrency">Cryptocurrency</Option>
-                        </Select>
-                    </Col>
-                )}
                 {cryptoNews.value.map((news, i) => (
                     <Col xs={24} sm={12} lg={8} key={i}>
                         <Card hoverable className="news-card">
