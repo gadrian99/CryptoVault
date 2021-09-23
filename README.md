@@ -1,6 +1,8 @@
-# Getting Started with Create React App
+# CryptoVault
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+This project aims to be a one stop shop for crypto users. Bringing real-time synced data and news from updated APIs along a dashboard for portfolio and wallet analysis in a rich and pleasant UI.
+
+# Development
 
 ## Available Scripts
 
