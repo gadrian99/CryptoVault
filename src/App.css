@@ -23,12 +23,12 @@ a:hover {
 }
 
 .navbar {
-  flex: 0.15;
+  width: 250px;
   background-color: rgb(0, 21, 41);
 }
 
 .main {
-  flex: 0.85;
+  flex: 1;
   width: 100%;
 }
 .routes {
@@ -41,6 +41,7 @@ a:hover {
   height: 100vh;
   margin: 0px;
   background-color: rgb(0, 21, 41);
+  width: 250px;
 }
 
 .logo-container {
@@ -48,6 +49,7 @@ a:hover {
   display: flex;
   padding: 20px;
   align-items: center;
+  justify-content: center;
   width: 100%;
 }
 .logo {
@@ -73,7 +75,7 @@ a:hover {
   align-items: center;
 }
 
-@media screen and (max-width: 1300px) {
+/* @media screen and (max-width: 1300px) {
   .main {
     margin-left: 50px;
   }
@@ -130,7 +132,7 @@ a:hover {
   .show-more {
     font-size: 1.3rem !important;
   }
-}
+} */
 
 .coin-detail-container {
   margin: 30px;
@@ -260,7 +262,7 @@ a:hover {
   background-color: var(--bgSecondary);
 }
 
-@media screen and (max-width: 1000px) {
+/* @media screen and (max-width: 1000px) {
   .stats-container {
     flex-direction: column;
   }
@@ -284,13 +286,14 @@ a:hover {
   .heading {
     margin-top: 20px;
   }
-}
+} */
 
 .select-news {
   width: 180px;
 }
 .news-card {
   min-height: 300px !important;
+  min-width: 400px !important;
 }
 .news-image-container {
   display: flex !important;
@@ -308,6 +311,17 @@ a:hover {
   color: black;
   margin: 10px 0px !important;
 }
+
+.news-wrapper {
+  display: grid;
+  justify-content: space-evenly;
+  flex-wrap: wrap;
+  grid-template-columns: repeat(auto-fill, 250px);
+  grid-template-rows: repeat(auto-fill, 300px);
+  grid-gap: 1rem;
+}
+
+
 .provider-container {
   display: flex;
   justify-content: space-between;
