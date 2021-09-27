@@ -365,8 +365,11 @@ a:hover {
   margin: 0px 10px !important;
 }
 .search-crypto {
-  margin: 20px auto 30px auto;
-  width: 250px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 0 auto 30px auto;
+  width: 100%;
 }
 .crypto-card-container {
   min-height: 65vh !important;
@@ -375,7 +378,7 @@ a:hover {
   min-width: 250px;
 }
 .crypto-card .crypto-image {
-  width: 35px;
+  height: 35px;
 }
 .select-timeperiod {
   width: 200px !important;

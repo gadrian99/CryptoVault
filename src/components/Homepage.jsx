@@ -1,10 +1,12 @@
 import React from 'react'
 import millify from 'millify'
-import { Typography, Row, Col, Statistic } from 'antd'
+import { Typography, Row, Col, Statistic, Card } from 'antd'
 import { Link } from 'react-router-dom'
 
 import { useGetCryptosQuery } from '../services/cryptoApi'
-import { Cryptocurrencies, News } from '../components'
+
+
+import { Cryptocurrencies, News, Events } from '../components'
 import Loader from './Loader'
 
 const { Title } = Typography
@@ -12,19 +14,42 @@ const { Title } = Typography
 const Homepage = () => {
     const { data, isFetching } = useGetCryptosQuery(10)
     const globalStats = data?.data?.stats
-    console.log(globalStats)
     if (isFetching) return <Loader />;
     return (
         <>
          <Title level={2}>
             Global Crypto Stats
          </Title>
-         <Row>
-             <Col span={12}><Statistic title="Total Cryptocurrencies" value={globalStats.total}/></Col>
-             <Col span={12}><Statistic title="Total Exchanges" value={millify(globalStats.totalExchanges)}/></Col>
-             <Col span={12}><Statistic title="Total Market Cap" value={'$' + millify(globalStats.totalMarketCap)}/></Col>
-             <Col span={12}><Statistic title="Total 24h Volume" value={'$' + millify(globalStats.total24hVolume)}/></Col>
-             <Col span={12}><Statistic title="Total Markets" value={millify(globalStats.totalMarkets)}/></Col>
+         <Row gutter={[32,32]}>
+             <Col xs={12} sm={12} lg={6}>
+                 <Link to='/cryptocurrencies'>
+                    <Card title="Total Cryptocurrencies" hoverable>
+                        <Statistic value={globalStats.total}/>
+                    </Card>
+                 </Link>
+            </Col>
+            <Col xs={12} sm={12} lg={6}>
+                 <Link to="/exchanges">
+                    <Card title="Total Exchanges" hoverable>
+                        <Statistic value={millify(globalStats.totalExchanges)}/>
+                    </Card>
+                 </Link>
+            </Col>
+            <Col xs={12} sm={12} lg={6}>
+                 <Card title="Total Market Cap" hoverable>
+                    <Statistic value={'$' + millify(globalStats.totalMarketCap)}/>
+                 </Card>
+            </Col>
+            <Col xs={12} sm={12} lg={6}>
+                 <Card title="Total 24h Volume" hoverable>
+                    <Statistic value={'$' + millify(globalStats.total24hVolume)}/>
+                 </Card>
+            </Col>
+            <Col xs={12} sm={12} lg={6}>
+                 <Card title="Total Markets" hoverable>
+                    <Statistic value={millify(globalStats.totalMarkets)}/>
+                 </Card>
+            </Col>
          </Row>
 
          <div className="home-heading-container">
@@ -38,6 +63,8 @@ const Homepage = () => {
              <Title level={4} className="show-more"><Link to="/news">Show more</Link></Title>
          </div>
          <News simplified/>
+
+         <Events />
         </>
     )
 }

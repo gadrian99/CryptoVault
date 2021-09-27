@@ -22,19 +22,23 @@ const News = ({ simplified }) => {
     return (
         <div>
             {!simplified && (
-                <Col spam={24} style={{ marginBottom: '1rem' }}>
-                    <Select
-                        showSearch
-                        className="select-news"
-                        placeholder="Select a coin"
-                        optionFilterProp="children"
-                        onChange={(value) => setnewsCategory(value)}
-                        filterOption={(input, option) => option.children.toLowerCase().indexOf(input.toLowerCase()) > 0 }
-                    >
-                        <Option value="cryptocurrency">Cryptocurrency</Option>
-                        {data?.data?.coins.map(coin => <Option value={coin.name}>{coin.name}</Option>)}
-                    </Select>
-                </Col>
+                <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                    <Title className="news-title" level={2}>News</Title>
+                    <Col spam={24} style={{ marginBottom: '1rem' }}>
+                        <Select
+                            showSearch
+                            className="select-news"
+                            placeholder="Select a coin"
+                            optionFilterProp="children"
+                            onChange={(value) => setnewsCategory(value)}
+                            filterOption={(input, option) => option.children.toLowerCase().indexOf(input.toLowerCase()) > 0 }
+                        >
+                            <Option value="cryptocurrency">Cryptocurrency</Option>
+                            {data?.data?.coins.map(coin => <Option value={coin.name}>{coin.name}</Option>)}
+                        </Select>
+                    </Col>
+                </div>
+                
             )}
             <Row gutter={[ 24, 24]}>
                 {cryptoNews.value.map((news, i) => (

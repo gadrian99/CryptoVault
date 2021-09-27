@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from 'react'
 import millify from 'millify'
 import { Link } from 'react-router-dom'
-import { Card, Row, Col, Input } from 'antd'
+import { Card, Row, Col, Input, Typography } from 'antd'
 
 import { useGetCryptosQuery } from '../services/cryptoApi'
 import Loader from './Loader'
+
+const { Title } = Typography
 
 const Cryptocurrencies = ({ simplified }) => {
     const count = simplified ? 10 : 100
@@ -24,7 +26,10 @@ const Cryptocurrencies = ({ simplified }) => {
         <>
             {!simplified && (
                 <div className="search-crypto">
-                    <Input placeholder="Search Cryptocurrency" onChange={(e) => setSearchTerm(e.target.value)} />
+                    <Title level={2}>
+                        Top Coins by Market Cap
+                    </Title>
+                    <Input placeholder="Search Cryptocurrency" onChange={(e) => setSearchTerm(e.target.value)} style={{ width: '250px', height: '40px'}} />
                 </div>
             )}
 
