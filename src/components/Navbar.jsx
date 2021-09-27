@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
-import { Button, Menu, Typography, Avatar } from 'antd'
+import { Button, Menu, Dropdown } from 'antd'
 import { Link } from 'react-router-dom'
-import { HomeOutlined, MoneyCollectOutlined, BulbOutlined, FundOutlined, MenuOutlined, UserOutlined, CalendarOutlined } from '@ant-design/icons'
+import { HomeOutlined, MoneyCollectOutlined, BulbOutlined, FundOutlined, MenuOutlined, UserOutlined, CalendarOutlined, DownOutlined } from '@ant-design/icons'
 
 import icon from '../images/logo.png'
 
@@ -25,6 +25,21 @@ const Navbar = () => {
             setActiveMenu(true)
         }
     }, [screenSize])
+
+    const menu = (
+        <Menu theme="dark">
+          <Menu.Item>
+            <Link to="/account/dashboard">Dashboard</Link>
+          </Menu.Item>
+          <Menu.Item>
+            <Link to="/account/transactions">Transactions</Link>
+          </Menu.Item>
+          <Menu.Item>
+            <Link to="/account/nfts">NFTs</Link>
+          </Menu.Item>
+        </Menu>
+      );
+
     return (
         <div className="nav-container">
             <div className="logo-container">
@@ -48,9 +63,11 @@ const Navbar = () => {
                     <Menu.Item icon={<CalendarOutlined />}>
                         <Link to="/events">Events</Link>
                     </Menu.Item>
-                    <Menu.Item icon={<UserOutlined />}>
-                        <Link to="/dashboard">Dashboard</Link>
-                    </Menu.Item>
+                    <Dropdown overlay={menu}>
+                        <Menu.Item icon={<UserOutlined />}>
+                            Account    <DownOutlined />
+                        </Menu.Item>
+                    </Dropdown>
                 </Menu>
             )}
         </div>

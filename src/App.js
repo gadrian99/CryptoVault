@@ -30,7 +30,7 @@ const App = () => {
                             <Route exact path="/news">
                                 <News />
                             </Route>
-                            <Route exact path="/dashboard">
+                            <Route exact path="/account/dashboard">
                                 <Dashboard />
                             </Route>
                             <Route exact path="/events">
