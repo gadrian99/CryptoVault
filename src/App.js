@@ -5,6 +5,7 @@ import { Layout, Typography, Space } from 'antd'
 import { Navbar, Exchanges, Homepage, Cryptocurrencies, News, CryptoDetails, Dashboard, Events } from './components'
 import './App.css'
 
+
 const App = () => {
     return (
         <div className="app">

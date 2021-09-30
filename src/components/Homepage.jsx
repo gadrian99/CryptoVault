@@ -36,17 +36,17 @@ const Homepage = () => {
                  </Link>
             </Col>
             <Col xs={12} sm={12} lg={6}>
-                 <Card title="Total Market Cap" hoverable>
+                 <Card title="Total Market Cap">
                     <Statistic value={'$' + millify(globalStats.totalMarketCap)}/>
                  </Card>
             </Col>
             <Col xs={12} sm={12} lg={6}>
-                 <Card title="Total 24h Volume" hoverable>
+                 <Card title="Total 24h Volume">
                     <Statistic value={'$' + millify(globalStats.total24hVolume)}/>
                  </Card>
             </Col>
             <Col xs={12} sm={12} lg={6}>
-                 <Card title="Total Markets" hoverable>
+                 <Card title="Total Markets">
                     <Statistic value={millify(globalStats.totalMarkets)}/>
                  </Card>
             </Col>
