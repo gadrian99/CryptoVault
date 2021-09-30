@@ -8,23 +8,26 @@ const { Title } = Typography
 
 const Dashboard = () => {
     const [txs, setTxs] = useState([])
+    const [tokens, setTokens] = useState([])
     const [loading, setLoading] = useState(false)
     const [error, setError] = useState(false)
     const { Moralis, user } = useMoralis()
-    // console.log(txs)
     useEffect(async () => {
         setLoading(true)
         try {
             await Moralis.Web3API.account.getTransactions()
                 .then((data) => {setTxs(data.result)})
+            await Moralis.Web3API.account.getTokenBalances({ chain: 'bsc'})
+                .then((data) => setTokens(data))
         } catch (err) {
             setError(true)
         }
         setLoading(false)
     }, [])
-    
-    // Table Data
-    const columns = [
+    console.log(tokens)
+
+    // Transactions Table Data
+    const transactionColumns = [
         {
             title: 'Date',
             dataIndex: 'date',
@@ -47,11 +50,11 @@ const Dashboard = () => {
         },
     ]
 
-    const generateData = () => {
-        let sourceData = []
+    const generateTxData = () => {
+        let data = []
         
         txs.map((tx,  i = 0) => {
-            sourceData.push(
+            data.push(
                 {
                     date: tx.block_timestamp,
                     hash: tx.hash,
@@ -60,23 +63,66 @@ const Dashboard = () => {
                 }
             )
         })
-        return sourceData
+        return data
     }
-    const dataSource = generateData()
+    const transactionData = generateTxData()
+
+    
+    //Token Info Table Data
+
+    const tokenColumns = [
+        {
+            title: 'Symbol',
+            dataIndex: 'symbol',
+            key: 'symbol',
+        },
+        {
+            title: 'Name',
+            dataIndex: 'name',
+            key: 'name',
+        },
+        {
+            title: 'Address',
+            dataIndex: 'address',
+            key: 'address',
+        },
+        {
+            title: 'Balance',
+            dataIndex: 'balance',
+            key: 'balance',
+        }  
+    ]
+
+    const generateTokenData = () => {
+        let data = []
+        
+        tokens.map((token,  i = 0) => {
+            data.push(
+                {
+                    key: i++,
+                    symbol: token.symbol,
+                    name: token.name,
+                    address: token.token_address,
+                    balance: token.balance,
+                }
+            )
+        })
+        return data
+    }
+    const tokenData = generateTokenData()
 
 
     if (loading) { return( <Loader /> )}
     if (error) { return( <div>Error</div>)}
     return(
         <div>
-            <Button onClick={() => console.log(dataSource)}>Get</Button>
             <Title level={2}>Dashboard</Title>
-            <Table dataSource={dataSource} columns={columns} />
-            {/* {txs.length != 0 && (
-                txs.map((tx) => (
-                    <p>{tx.hash}</p>
-                ))
-            )} */}
+
+            <Title level={4}>Transaction History</Title>
+            <Table dataSource={transactionData} columns={transactionColumns} />
+
+            <Title level={4}>Tokens</Title>
+            <Table dataSource={tokenData} columns={tokenColumns} />
         </div>
     )
 
