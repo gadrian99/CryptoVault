@@ -23,30 +23,30 @@ const Homepage = () => {
          <Row gutter={[32,32]}>
              <Col xs={12} sm={12} lg={6}>
                  <Link to='/cryptocurrencies'>
-                    <Card title="Total Cryptocurrencies" hoverable>
+                    <Card title="🏛️ Total Cryptocurrencies" hoverable>
                         <Statistic value={globalStats.total}/>
                     </Card>
                  </Link>
             </Col>
             <Col xs={12} sm={12} lg={6}>
                  <Link to="/exchanges">
-                    <Card title="Total Exchanges" hoverable>
+                    <Card title="💱 Total Exchanges" hoverable>
                         <Statistic value={millify(globalStats.totalExchanges)}/>
                     </Card>
                  </Link>
             </Col>
             <Col xs={12} sm={12} lg={6}>
-                 <Card title="Total Market Cap">
+                 <Card title="♾️ Total Market Cap">
                     <Statistic value={'$' + millify(globalStats.totalMarketCap)}/>
                  </Card>
             </Col>
             <Col xs={12} sm={12} lg={6}>
-                 <Card title="Total 24h Volume">
+                 <Card title="📈 Total 24h Volume">
                     <Statistic value={'$' + millify(globalStats.total24hVolume)}/>
                  </Card>
             </Col>
             <Col xs={12} sm={12} lg={6}>
-                 <Card title="Total Markets">
+                 <Card title="🏛️ Total Markets">
                     <Statistic value={millify(globalStats.totalMarkets)}/>
                  </Card>
             </Col>
@@ -65,6 +65,14 @@ const Homepage = () => {
          <News simplified/>
 
          <Events />
+         <iframe
+         style={{ width: '100%', height: "700px"}}
+            id="onramper-widget"
+            title="Onramper widget"
+            frameborder="no"
+            allow="accelerometer; autoplay; camera; gyroscope; payment;"
+            src="https://widget.onramper.com?color=266678&apiKey=pk_test_jWCXCkJiKkFktEIitty3O160jc7OHEj2l0Hq93ngofw0">
+        </iframe>
         </>
     )
 }

@@ -32,10 +32,10 @@ const Navbar = () => {
             <Link to="/account/dashboard">Dashboard</Link>
           </Menu.Item>
           <Menu.Item>
-            <Link to="/account/transactions">Transactions</Link>
+            <Link to="/account/transfer">Transfer</Link>
           </Menu.Item>
           <Menu.Item>
-            <Link to="/account/nfts">NFTs</Link>
+            <Link to="/account/swap">Dex Swap</Link>
           </Menu.Item>
         </Menu>
       );

@@ -2,12 +2,11 @@ import React, { useState, useEffect }from 'react'
 import { Typography, Button, Table, Card, Statistic, Select } from 'antd'
 import { LoginOutlined, LogoutOutlined } from '@ant-design/icons';
 import { useMoralis } from "react-moralis";
-import moment from 'moment'
 import Loader from './Loader'
-const Web3 = require('web3')
 
 const { Title } = Typography
 const { Option } = Select
+
 const Dashboard = () => {
     // Setup state for network. Initialize to current established in wallet
     // Adjust wallet balance due to fiat currency selected
@@ -22,9 +21,13 @@ const Dashboard = () => {
     const [error, setError] = useState(false)
     const { Moralis, logout, isAuthenticated, authenticate } = useMoralis()
 
-    console.log(walletBalance)
-    useEffect(async () => {
+    useEffect(() => {
         setLoading(true)
+        fetchData()
+        setLoading(false)
+    }, [])
+
+    const fetchData = async () => {
         if (!isAuthenticated) {
             console.log('nun to do')
         } else {
@@ -43,10 +46,7 @@ const Dashboard = () => {
                 setError(true)
             }
         }
-        setLoading(false)
-    }, [])
-
-
+    }
     // Transactions Table Data
     const transactionColumns = [
         {
@@ -181,7 +181,9 @@ const Dashboard = () => {
 
 
     if (loading) { return( <Loader /> )}
+    
     if (error) { return( <div>Error</div>)}
+
     if (!isAuthenticated) {
         return (
             <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '50px'}}>
