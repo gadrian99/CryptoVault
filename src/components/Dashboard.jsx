@@ -88,8 +88,8 @@ const Dashboard = () => {
                 {
                     date: tx.block_timestamp.substring(0 , 10),
                     hash: tx.hash.substring(0 , 6) + "..." + tx.hash.substring(62),
-                    from: tx.from_address.substring(0 , 6) + "..." + tx.hash.substring(62),
-                    to: tx.to_address.substring(0 , 6) + "..." + tx.hash.substring(62),
+                    from: tx.from_address.substring(0 , 6) + "..." + tx.from_address.substring(38),
+                    to: tx.to_address.substring(0 , 6) + "..." + tx.to_address.substring(38),
                     value: tx.value
                 }
             )
@@ -136,7 +136,7 @@ const Dashboard = () => {
                 {
                     symbol: token.symbol,
                     name: token.name,
-                    address: token.token_address,
+                    address: token.token_address.substring(0 , 6) + "..." + token.token_address.substring(38),
                     balance: token.balance / Math.pow(10, token.decimals)
                 }
             )
@@ -261,7 +261,7 @@ const Dashboard = () => {
                 <Button type="primary" onClick={() => fetchData()}>Get Data <DownloadOutlined /></Button>
                 <Button type="primary" onClick={() => logout()} danger>Logout <LogoutOutlined /></Button>
             </div>
-            <Title level={4}>Current address: {address}</Title>
+            <Title level={4}>Current address: {address.substring(0 , 6) + "..." + address.substring(38)}</Title>
             <Select defaultValue={'0x1'} style={{ width: 120 }} onChange={(data) => setChain(data)}>
                 {availableNetworks.map(({id, name}) => (
                     <Option value={id}>{name}</Option>
