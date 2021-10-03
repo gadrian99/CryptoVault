@@ -27,6 +27,17 @@ const Dashboard = () => {
     const [loading, setLoading] = useState(false)
     const [error, setError] = useState({})
 
+    const clearState = () => {
+        setAddress('')
+        setChain('')
+        setTxs([])
+        setTokens([])
+        setTokensTxs([])
+        setNfts([])
+        setTotalGas('')
+        setWalletBalance('')
+    }
+
     useEffect(async () => {
         setLoading(true)
         // fetchData()
@@ -86,10 +97,10 @@ const Dashboard = () => {
         txs.map((tx) => {
             data.push(
                 {
-                    date: tx.block_timestamp.substring(0 , 10),
-                    hash: tx.hash.substring(0 , 6) + "..." + tx.hash.substring(62),
-                    from: tx.from_address.substring(0 , 6) + "..." + tx.from_address.substring(38),
-                    to: tx.to_address.substring(0 , 6) + "..." + tx.to_address.substring(38),
+                    date: tx.block_timestamp?.substring(0 , 10),
+                    hash: tx.hash?.substring(0 , 6) + "..." + tx.hash?.substring(62),
+                    from: tx.from_address?.substring(0 , 6) + "..." + tx.from_address?.substring(38),
+                    to: tx.to_address?.substring(0 , 6) + "..." + tx.to_address?.substring(38),
                     value: tx.value
                 }
             )
@@ -136,7 +147,7 @@ const Dashboard = () => {
                 {
                     symbol: token.symbol,
                     name: token.name,
-                    address: token.token_address.substring(0 , 6) + "..." + token.token_address.substring(38),
+                    address: token.token_address?.substring(0 , 6) + "..." + token.token_address?.substring(38),
                     balance: token.balance / Math.pow(10, token.decimals)
                 }
             )
@@ -175,10 +186,10 @@ const Dashboard = () => {
         tokenTxs.map((tx) => {
             data.push(
                 {
-                    date: tx.block_timestamp,
-                    hash: tx.block_hash,
-                    from: tx.from_address,
-                    to: tx.to_address,
+                    date: tx.block_timestamp?.substring(0 , 10),
+                    hash: tx.block_hash?.substring(0 , 6) + "..." + tx.block_hash?.substring(62),
+                    from: tx.from_address?.substring(0 , 6) + "..." + tx.from_address?.substring(38),
+                    to: tx.to_address?.substring(0 , 6) + "..." + tx.to_address?.substring(38),
                     value: tx.value
                 }
             )
@@ -232,6 +243,8 @@ const Dashboard = () => {
 
     
 
+    
+
      // Monitor Account change
      Moralis.onAccountsChanged((data) => setAddress(data[0]))
 
@@ -253,13 +266,16 @@ const Dashboard = () => {
     }
 
     return(
-        // first 6 and last characters for hashes
         <div>
             {address == '' &&  setAddress(user.attributes.accounts[0])}
             <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '50px'}}>
                 <Title level={2}>Dashboard</Title>
                 <Button type="primary" onClick={() => fetchData()}>Get Data <DownloadOutlined /></Button>
-                <Button type="primary" onClick={() => logout()} danger>Logout <LogoutOutlined /></Button>
+                <Button type="primary" onClick={() => {
+                    logout()
+                    //test once deployed
+                    clearState()
+                }} danger>Logout <LogoutOutlined /></Button>
             </div>
             <Title level={4}>Current address: {address.substring(0 , 6) + "..." + address.substring(38)}</Title>
             <Select defaultValue={'0x1'} style={{ width: 120 }} onChange={(data) => setChain(data)}>
