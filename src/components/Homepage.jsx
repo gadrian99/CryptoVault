@@ -5,7 +5,6 @@ import { Link } from 'react-router-dom'
 
 import { useGetCryptosQuery } from '../services/cryptoApi'
 
-
 import { Cryptocurrencies, News, Events } from '../components'
 import Loader from './Loader'
 
@@ -23,7 +22,7 @@ const Homepage = () => {
          <Row gutter={[32,32]}>
              <Col xs={12} sm={12} lg={6}>
                  <Link to='/cryptocurrencies'>
-                    <Card title="🏛️ Total Cryptocurrencies" hoverable>
+                    <Card title="₿ Total Cryptocurrencies" hoverable>
                         <Statistic value={globalStats.total}/>
                     </Card>
                  </Link>
@@ -64,15 +63,15 @@ const Homepage = () => {
          </div>
          <News simplified/>
 
-         <Events />
-         <iframe
+         {/* <Events /> */}
+         {/* <iframe
          style={{ width: '100%', height: "700px"}}
             id="onramper-widget"
             title="Onramper widget"
             frameborder="no"
             allow="accelerometer; autoplay; camera; gyroscope; payment;"
             src="https://widget.onramper.com?color=266678&apiKey=pk_test_jWCXCkJiKkFktEIitty3O160jc7OHEj2l0Hq93ngofw0">
-        </iframe>
+        </iframe> */}
         </>
     )
 }

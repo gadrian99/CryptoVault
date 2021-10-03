@@ -1,52 +1,60 @@
 import React, { useState, useEffect }from 'react'
 import { Typography, Button, Table, Card, Statistic, Select } from 'antd'
-import { LoginOutlined, LogoutOutlined } from '@ant-design/icons';
+import { DownloadOutlined, LoginOutlined, LogoutOutlined } from '@ant-design/icons';
 import { useMoralis } from "react-moralis";
 import Loader from './Loader'
 
-const { Title } = Typography
+const { Title, Text } = Typography
 const { Option } = Select
 
 const Dashboard = () => {
+    const { Moralis, logout, isAuthenticated, authenticate, user } = useMoralis()
+
+    // Moralis.onDisconnect((data) => alert('disconnected from site' , data))
+    // Moralis.onConnect((data) => alert('connected to site', data))
     // Setup state for network. Initialize to current established in wallet
     // Adjust wallet balance due to fiat currency selected
-    const [address, setAddress] = useState('0x5d6c606ca2C0b8a78b71A53470f780F19c3822d4')
-    const [chain, setChain] = useState('eth')
+    
+    const [address, setAddress] = useState('')
+    const [chain, setChain] = useState('')
     const [txs, setTxs] = useState([])
     const [tokens, setTokens] = useState([])
     const [tokenTxs, setTokensTxs] = useState([])
     const [nfts, setNfts] = useState([])
+    const [totalGas, setTotalGas] = useState(242)
     const [walletBalance, setWalletBalance] = useState('')
-    const [loading, setLoading] = useState(false)
-    const [error, setError] = useState(false)
-    const { Moralis, logout, isAuthenticated, authenticate } = useMoralis()
 
-    useEffect(() => {
+    const [loading, setLoading] = useState(false)
+    const [error, setError] = useState({})
+
+    useEffect(async () => {
         setLoading(true)
-        fetchData()
+        // fetchData()
         setLoading(false)
-    }, [])
+    })
 
     const fetchData = async () => {
-        if (!isAuthenticated) {
-            console.log('nun to do')
-        } else {
-            try {
-                await Moralis.Web3API.account.getTransactions()
-                    .then((data) => {setTxs(data.result)})
-                await Moralis.Web3API.account.getTokenBalances({ chain: '0x38'})
-                    .then((data) => setTokens(data))
-                await Moralis.Web3API.account.getNativeBalance({ address: address})
-                    .then((data) => setWalletBalance(data.balance))
-                await Moralis.Web3API.account.getTokenTransfers()
-                    .then((data) => setTokensTxs(data.result))
-                await Moralis.Web3API.account.getNFTs()
-                    .then((data) => setNfts(data))
-            } catch (err) {
-                setError(true)
-            }
+        const options = {
+            chain: chain,
+            address: address,
+        }
+        try {
+            await Moralis.Web3API.account.getTransactions(options)
+                .then((data) => setTxs(data.result))
+            await Moralis.Web3API.account.getTokenBalances(options)
+                .then((data) => setTokens(data))
+            await Moralis.Web3API.account.getNativeBalance({ address })
+                .then((data) => setWalletBalance(data.balance))
+            await Moralis.Web3API.account.getTokenTransfers(options)
+                .then((data) => setTokensTxs(data.result))
+            await Moralis.Web3API.account.getNFTs(options)
+                .then((data) => console.log(data)) 
+        } catch (err) {
+            setError(err)
+            console.log(err)
         }
     }
+    
     // Transactions Table Data
     const transactionColumns = [
         {
@@ -78,10 +86,10 @@ const Dashboard = () => {
         txs.map((tx) => {
             data.push(
                 {
-                    date: tx.block_timestamp,
-                    hash: tx.hash.substring(20),
-                    from: tx.from_address,
-                    to: tx.to_address,
+                    date: tx.block_timestamp.substring(0 , 10),
+                    hash: tx.hash.substring(0 , 6) + "..." + tx.hash.substring(62),
+                    from: tx.from_address.substring(0 , 6) + "..." + tx.hash.substring(62),
+                    to: tx.to_address.substring(0 , 6) + "..." + tx.hash.substring(62),
                     value: tx.value
                 }
             )
@@ -179,47 +187,97 @@ const Dashboard = () => {
     }
     const tokenTxData = generateTokenTxData()
 
+    const availableNetworks = [
+        { 
+            id: '0x1',
+            name: 'Eth',
+        },
+        { 
+            id: '0x3',
+            name: 'Ropsten',
+        },
+        { 
+            id: '0x4',
+            name: 'Rinkeby',
+        },
+        { 
+            id: '0x5',
+            name: 'Goerli',
+        },
+        { 
+            id: '0x2a',
+            name: 'Kovan',
+        },
+        { 
+            id: '0x38',
+            name: 'Bsc',
+        },
+        { 
+            id: '0x61',
+            name: 'Bsc testnet',
+        },
+        { 
+            id: '0x89',
+            name: 'Matic',
+        },
+        { 
+            id: '0x13881',
+            name: 'Matic testnet',
+        },
+        { 
+            id: '0xa86a',
+            name: 'Avalanche',
+        }
+    ]
 
+    
+
+     // Monitor Account change
+     Moralis.onAccountsChanged((data) => setAddress(data[0]))
+
+     // Monitor Network Change
+     Moralis.onChainChanged((chain) => setChain(chain))
+
+     
+     
     if (loading) { return( <Loader /> )}
     
-    if (error) { return( <div>Error</div>)}
-
     if (!isAuthenticated) {
         return (
-            <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '50px'}}>
-                <Title level={2}>Dashboard</Title>
-                <Button type="primary" onClick={() => authenticate()}>Login <LoginOutlined /></Button>
+            <div style={{ display: 'flex', justifyContent: 'center',  alignItems: 'center', marginBottom: '50px', height: '80vh', flexDirection: 'column' }}>
+                <Title level={2}>Account dashboard</Title>
+                <Text style={{ marginBottom: '60px' }}>Login with your wallet to access all your transactions and token history as well as more insight on your crypto wallet</Text>
+                <Button type="primary" onClick={() => authenticate()}>Login with Metamask <LoginOutlined /></Button>
             </div>
         )
     }
 
     return(
+        // first 6 and last characters for hashes
         <div>
+            {address == '' &&  setAddress(user.attributes.accounts[0])}
             <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '50px'}}>
                 <Title level={2}>Dashboard</Title>
+                <Button type="primary" onClick={() => fetchData()}>Get Data <DownloadOutlined /></Button>
                 <Button type="primary" onClick={() => logout()} danger>Logout <LogoutOutlined /></Button>
             </div>
-            
-            {/* <Select
-                showSearch
-                placeholder="Select network"
-                optionFilterProp="children"
-                onChange={(value) => setChain(value)}
-                filterOption={(input, option) => option.children.toLowerCase().indexOf(input.toLowerCase()) > 0 }
-            >
-                <Option value="cryptocurrency">Cryptocurrency</Option>
-                {data?.data?.coins.map(coin => <Option value={coin.name}>{coin.name}</Option>)}
-            </Select> */}
+            <Title level={4}>Current address: {address}</Title>
+            <Select defaultValue={'0x1'} style={{ width: 120 }} onChange={(data) => setChain(data)}>
+                {availableNetworks.map(({id, name}) => (
+                    <Option value={id}>{name}</Option>
+                ))}
+            </Select>
+            <Title level={4}>Current network: {chain}</Title>
 
             <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '50px'}}>
                 <Card title="💸 Wallet Balance" bordered={true} style={{ width: 300 }}>
-                    <Statistic value={walletBalance / 1e18}/>
+                    <Statistic value={walletBalance / 1e18} precision={10} />
                 </Card>
                 <Card title="🏷️ Total Transactions" bordered={true} style={{ width: 300 }}>
                     <Statistic value={txs.length}/>
                 </Card>
-                <Card title="🔥 Gas Burned" bordered={true} style={{ width: 300 }}>
-                    <Statistic value={250032}/>
+                <Card title="🔥 Average Gas Burned" bordered={true} style={{ width: 300 }}>
+                    <Statistic value={totalGas} precision={10}/>
                 </Card>
             </div>
             <Title level={4}>Transaction History</Title>
