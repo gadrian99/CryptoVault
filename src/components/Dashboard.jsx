@@ -1,5 +1,6 @@
 import React, { useState, useEffect }from 'react'
-import { Typography, Button, Table, Card, Statistic, Select } from 'antd'
+import millify from 'millify'
+import { Typography, Button, Table, Card, Statistic, Select, Skeleton } from 'antd'
 import { DownloadOutlined, LoginOutlined, LogoutOutlined } from '@ant-design/icons';
 import { useMoralis } from "react-moralis";
 import Loader from './Loader'
@@ -7,6 +8,7 @@ import Icon from "react-crypto-icons";
 
 const { Title, Text } = Typography
 const { Option } = Select
+const { Meta } = Card;
 
 const Dashboard = () => {
     const { Moralis, logout, isAuthenticated, authenticate, user } = useMoralis()
@@ -22,9 +24,9 @@ const Dashboard = () => {
     const [tokens, setTokens] = useState([])
     const [tokenTxs, setTokensTxs] = useState([])
     const [nfts, setNfts] = useState([])
-    const [totalGas, setTotalGas] = useState(242)
+    const [totalGas, setTotalGas] = useState(0)
     const [walletBalance, setWalletBalance] = useState('')
-    const [view, setView] = useState(false)
+    const [view, setView] = useState(true)
 
     const [loading, setLoading] = useState(false)
     const [error, setError] = useState({})
@@ -85,32 +87,48 @@ const Dashboard = () => {
     }
 
     useEffect(async () => {
-        setLoading(true)
         // fetchData()
-        setLoading(false)
     })
 
+    
+
     const fetchData = async () => {
-        const options = {
-            chain: chain,
-            address: address,
-        }
-        try {
-            await Moralis.Web3API.account.getTransactions(options)
-                .then((data) => setTxs(data.result))
-            await Moralis.Web3API.account.getTokenBalances(options)
-                .then((data) => setTokens(data))
-            await Moralis.Web3API.account.getNativeBalance({ address })
-                .then((data) => setWalletBalance(data.balance))
-            await Moralis.Web3API.account.getTokenTransfers(options)
-                .then((data) => setTokensTxs(data.result))
-            await Moralis.Web3API.account.getNFTs(options)
-                .then((data) => setNfts(data.result)) 
-        } catch (err) {
-            setError(err)
-            console.log(err)
-        }
-        setView(true)
+        setLoading(true)
+        setTimeout(() => setLoading(false), 3000)
+        // const gasTotal = async (txs) => {
+        //     setTotalGas(0)
+        //     let x = 0
+        //     await txs.forEach(({receipt_cumulative_gas_used}) => {
+        //         x+= parseInt(receipt_cumulative_gas_used)
+        //     })
+        //     setTotalGas(x) 
+        // }
+
+        // const options = {
+        //     chain: chain,
+        //     address: address,
+        // }
+
+        // try {
+        //     await Moralis.Web3API.account.getTransactions(options)
+        //         .then((data) => setTxs(data.result))
+        //     await Moralis.Web3API.account.getTokenBalances(options)
+        //         .then((data) => setTokens(data))
+        //     await Moralis.Web3API.account.getNativeBalance({ address })
+        //         .then((data) => setWalletBalance(data.balance))
+        //     await Moralis.Web3API.account.getTokenTransfers(options)
+        //         .then((data) => setTokensTxs(data.result))
+        //     await Moralis.Web3API.account.getNFTs(options)
+        //         .then((data) => setNfts(data.result))
+        //     await Moralis.Web3API.token.getTokenMetadata().then((x) => console.log(x))
+            
+        // } catch (err) {
+        //     setError(err)
+        //     console.log(err)
+        // }
+        // gasTotal(txs)
+        // setView(true)
+        
     }
     
     // Transactions Table Data
@@ -136,12 +154,12 @@ const Dashboard = () => {
             key: 'to',
         },
         { 
-            title: 'Value (gWei)', 
+            title: 'Value (wei)', 
             dataIndex: 'value', 
             key: 'value'
         },
         { 
-            title: 'Total Gas used (gWei)', 
+            title: 'Gas used (wei)', 
             dataIndex: 'receipt_cumulative_gas_used', 
             key: 'receipt_cumulative_gas_used'
         }, 
@@ -325,11 +343,7 @@ const Dashboard = () => {
 
      // Monitor Network Change
      Moralis.onChainChanged((chain) => setChain(chain))
-
      
-     
-    if (loading) { return( <Loader /> )}
-    
     if (!isAuthenticated) {
         return (
             <div style={{ display: 'flex', justifyContent: 'center',  alignItems: 'center', marginBottom: '50px', height: '80vh', flexDirection: 'column' }}>
@@ -370,29 +384,35 @@ const Dashboard = () => {
 
 
             {view && (
-                <>
-                    <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '50px'}}>
+                <>  
+                    <div style={{ display: 'flex', justifyContent: 'space-between', flexWrap: 'wrap' }}>
                         <Card title="💸 Wallet Balance" bordered={true} style={{ width: 300 }}>
-                            <Statistic value={walletBalance / 1e18} precision={10} />
+                            {loading ? <Skeleton paragraph={{ rows: 0 }} /> : <Statistic value={walletBalance / 1e18} precision={10} />}
                         </Card>
                         <Card title="🏷️ Total Transactions" bordered={true} style={{ width: 300 }}>
-                            <Statistic value={txs.length}/>
+                            {loading ? <Skeleton paragraph={{ rows: 0 }} /> : <Statistic value={txs.length}/>}
                         </Card>
-                        <Card title="🔥 Average Gas Burned" bordered={true} style={{ width: 300 }}>
-                            <Statistic value={totalGas} precision={10}/>
+                        <Card title="🔥 Total Gas Burned" bordered={true} style={{ width: 300 }}>
+                            {loading ? <Skeleton paragraph={{ rows: 0 }} /> : <Statistic value={millify(totalGas)} precision={0}/>}
+                        </Card>
+                        <Card title="💠 Total Tokens" bordered={true} style={{ width: 300 }}>
+                            {loading ? <Skeleton paragraph={{ rows: 0 }} /> : <Statistic value={tokens.length} precision={0}/>}
+                        </Card>
+                        <Card title="⚜️ Total NFTs" bordered={true} style={{ width: 300 }}>
+                            {loading ? <Skeleton paragraph={{ rows: 0 }} /> : <Statistic value={nfts.length} precision={0}/>}
                         </Card>
                     </div>
                     <Title level={4}>Transaction History</Title>
-                    <Table dataSource={transactionData} columns={transactionColumns} />
+                    <Table loading={loading} dataSource={transactionData} columns={transactionColumns} />
                     
                     <Title level={4}>Tokens</Title>
-                    <Table dataSource={tokenData} columns={tokenColumns} />
+                    <Table loading={loading} dataSource={tokenData} columns={tokenColumns} />
 
                     <Title level={4}>Token Transactions</Title>
-                    <Table dataSource={tokenTxData} columns={tokenTxColumns} />
+                    <Table loading={loading} dataSource={tokenTxData} columns={tokenTxColumns} />
 
                     <Title level={4}>NFTs List</Title>
-                    <Table dataSource={nftData} columns={nftColumns} />
+                    <Table loading={loading} dataSource={nftData} columns={nftColumns} />
                 </>
             )}
         </div>
