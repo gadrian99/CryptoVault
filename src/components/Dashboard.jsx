@@ -17,7 +17,7 @@ const Dashboard = () => {
     // Moralis.onConnect((data) => alert('connected to site', data))
     // Setup state for network. Initialize to current established in wallet
     // Adjust wallet balance due to fiat currency selected
-    
+
     const [address, setAddress] = useState('')
     const [chain, setChain] = useState('0x1')
     const [txs, setTxs] = useState([])
@@ -32,43 +32,43 @@ const Dashboard = () => {
     const [error, setError] = useState({})
 
     const availableNetworks = [
-        { 
+        {
             id: '0x1',
             name: 'Eth',
         },
-        { 
+        {
             id: '0x3',
             name: 'Ropsten',
         },
-        { 
+        {
             id: '0x4',
             name: 'Rinkeby',
         },
-        { 
+        {
             id: '0x5',
             name: 'Goerli',
         },
-        { 
+        {
             id: '0x2a',
             name: 'Kovan',
         },
-        { 
+        {
             id: '0x38',
             name: 'Bsc',
         },
-        { 
+        {
             id: '0x61',
             name: 'Bsc testnet',
         },
-        { 
+        {
             id: '0x89',
             name: 'Matic',
         },
-        { 
+        {
             id: '0x13881',
             name: 'Matic testnet',
         },
-        { 
+        {
             id: '0xa86a',
             name: 'Avalanche',
         }
@@ -90,47 +90,47 @@ const Dashboard = () => {
         // fetchData()
     })
 
-    
+
 
     const fetchData = async () => {
         setLoading(true)
         setTimeout(() => setLoading(false), 3000)
-        // const gasTotal = async (txs) => {
-        //     setTotalGas(0)
-        //     let x = 0
-        //     await txs.forEach(({receipt_cumulative_gas_used}) => {
-        //         x+= parseInt(receipt_cumulative_gas_used)
-        //     })
-        //     setTotalGas(x) 
-        // }
+        const gasTotal = async (txs) => {
+            setTotalGas(0)
+            let x = 0
+            await txs.forEach(({receipt_cumulative_gas_used}) => {
+                x+= parseInt(receipt_cumulative_gas_used)
+            })
+            setTotalGas(x)
+        }
 
-        // const options = {
-        //     chain: chain,
-        //     address: address,
-        // }
+        const options = {
+            chain: chain,
+            address: address,
+        }
 
-        // try {
-        //     await Moralis.Web3API.account.getTransactions(options)
-        //         .then((data) => setTxs(data.result))
-        //     await Moralis.Web3API.account.getTokenBalances(options)
-        //         .then((data) => setTokens(data))
-        //     await Moralis.Web3API.account.getNativeBalance({ address })
-        //         .then((data) => setWalletBalance(data.balance))
-        //     await Moralis.Web3API.account.getTokenTransfers(options)
-        //         .then((data) => setTokensTxs(data.result))
-        //     await Moralis.Web3API.account.getNFTs(options)
-        //         .then((data) => setNfts(data.result))
-        //     await Moralis.Web3API.token.getTokenMetadata().then((x) => console.log(x))
-            
-        // } catch (err) {
-        //     setError(err)
-        //     console.log(err)
-        // }
-        // gasTotal(txs)
-        // setView(true)
-        
+        try {
+            await Moralis.Web3API.account.getTransactions(options)
+                .then((data) => setTxs(data.result))
+            await Moralis.Web3API.account.getTokenBalances(options)
+                .then((data) => setTokens(data))
+            await Moralis.Web3API.account.getNativeBalance({ address })
+                .then((data) => setWalletBalance(data.balance))
+            await Moralis.Web3API.account.getTokenTransfers(options)
+                .then((data) => setTokensTxs(data.result))
+            await Moralis.Web3API.account.getNFTs(options)
+                .then((data) => setNfts(data.result))
+            await Moralis.Web3API.token.getTokenMetadata().then((x) => console.log(x))
+
+        } catch (err) {
+            setError(err)
+            console.log(err)
+        }
+        gasTotal(txs)
+        setView(true)
+
     }
-    
+
     // Transactions Table Data
     const transactionColumns = [
         {
@@ -153,27 +153,27 @@ const Dashboard = () => {
             dataIndex: 'to',
             key: 'to',
         },
-        { 
-            title: 'Value (wei)', 
-            dataIndex: 'value', 
+        {
+            title: 'Value (wei)',
+            dataIndex: 'value',
             key: 'value'
         },
-        { 
-            title: 'Gas used (wei)', 
-            dataIndex: 'receipt_cumulative_gas_used', 
+        {
+            title: 'Gas used (wei)',
+            dataIndex: 'receipt_cumulative_gas_used',
             key: 'receipt_cumulative_gas_used'
-        }, 
-        { 
-            title: 'Nonce', 
-            dataIndex: 'nonce', 
+        },
+        {
+            title: 'Nonce',
+            dataIndex: 'nonce',
             key: 'nonce'
-        }, 
-        
+        },
+
     ]
 
     const generateTxData = () => {
         let data = []
-        
+
         txs.map((tx) => {
             data.push(
                 {
@@ -191,7 +191,7 @@ const Dashboard = () => {
     }
     const transactionData = generateTxData()
 
-    
+
     //Token Info Table Data
 
     const tokenColumns = [
@@ -218,12 +218,12 @@ const Dashboard = () => {
             title: 'Balance',
             dataIndex: 'balance',
             key: 'balance',
-        }  
+        }
     ]
 
     const generateTokenData = () => {
         let data = []
-        
+
         tokens.map((token) => {
             data.push(
                 {
@@ -238,7 +238,7 @@ const Dashboard = () => {
     }
     const tokenData = generateTokenData()
 
-    // Token Transactions 
+    // Token Transactions
     const tokenTxColumns = [
         {
             title: 'Date',
@@ -259,12 +259,12 @@ const Dashboard = () => {
             title: 'To',
             dataIndex: 'to',
             key: 'to',
-        }    
+        }
     ]
 
     const generateTokenTxData = () => {
         let data = []
-        
+
         tokenTxs.map((tx) => {
             data.push(
                 {
@@ -320,7 +320,7 @@ const Dashboard = () => {
 
     const generatenftData = () => {
         let data = []
-        
+
         nfts.map((nft) => {
             data.push(
                 {
@@ -343,14 +343,14 @@ const Dashboard = () => {
 
      // Monitor Network Change
      Moralis.onChainChanged((chain) => setChain(chain))
-     
+
     if (!isAuthenticated) {
         return (
             <div style={{ display: 'flex', justifyContent: 'center',  alignItems: 'center', marginBottom: '50px', height: '80vh', flexDirection: 'column' }}>
                 <Title level={2}>Account dashboard</Title>
                 <Text style={{ marginBottom: '60px' }}>Login with your wallet to access all your transactions and token history as well as more insight on your crypto wallet</Text>
                 <Button type="primary" onClick={() => authenticate({signingMessage:"Hello from CryptoVault :) Sign this request free of charge to authenticate."})}>Login with Metamask <LoginOutlined /></Button>
-                
+
             </div>
         )
     }
@@ -359,8 +359,8 @@ const Dashboard = () => {
         <div>
             {/* executes once user logs in */}
             {address == '' &&  setAddress(user.attributes.accounts[0])}
-            
-            <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '30px', alignItems: 'center'}}>
+
+            <div style={{ display: 'flex', justifyContent: 'space-between', margin: '30px 0', alignItems: 'center'}}>
                 <Title level={3}>Welcome {user.get("username")}</Title>
                 <Button type="primary" onClick={() => {
                     logout()
@@ -373,7 +373,7 @@ const Dashboard = () => {
                 <Text>Current address: <Select defaultValue={address} style={{ width: 150 }} onChange={(data) => setAddress(data)}>
                     <Option value={address}>{address.substring(0,6) + "..." + address.substring(38)}</Option>
                 </Select></Text>
-                
+
                 <Text>Current chain: <Select defaultValue={'0x1'} style={{ width: 120 }} onChange={(data) => setChain(data)}>
                     {availableNetworks.map(({id, name}) => (
                         <Option value={id}>{name}</Option>
@@ -384,8 +384,8 @@ const Dashboard = () => {
 
 
             {view && (
-                <>  
-                    <div style={{ display: 'flex', justifyContent: 'space-between', flexWrap: 'wrap' }}>
+                <>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', flexWrap: 'wrap', margin: '30px 0' }}>
                         <Card title="💸 Wallet Balance" bordered={true} style={{ width: 300 }}>
                             {loading ? <Skeleton paragraph={{ rows: 0 }} /> : <Statistic value={walletBalance / 1e18} precision={10} />}
                         </Card>
@@ -404,7 +404,7 @@ const Dashboard = () => {
                     </div>
                     <Title level={4}>Transaction History</Title>
                     <Table loading={loading} dataSource={transactionData} columns={transactionColumns} />
-                    
+
                     <Title level={4}>Tokens</Title>
                     <Table loading={loading} dataSource={tokenData} columns={tokenColumns} />
 
