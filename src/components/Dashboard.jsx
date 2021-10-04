@@ -134,7 +134,23 @@ const Dashboard = () => {
             title: 'To',
             dataIndex: 'to',
             key: 'to',
-        }
+        },
+        { 
+            title: 'Value (gWei)', 
+            dataIndex: 'value', 
+            key: 'value'
+        },
+        { 
+            title: 'Total Gas used (gWei)', 
+            dataIndex: 'receipt_cumulative_gas_used', 
+            key: 'receipt_cumulative_gas_used'
+        }, 
+        { 
+            title: 'Nonce', 
+            dataIndex: 'nonce', 
+            key: 'nonce'
+        }, 
+        
     ]
 
     const generateTxData = () => {
@@ -147,7 +163,9 @@ const Dashboard = () => {
                     hash: tx.hash?.substring(0 , 6) + "..." + tx.hash?.substring(62),
                     from: tx.from_address?.substring(0 , 6) + "..." + tx.from_address?.substring(38),
                     to: tx.to_address?.substring(0 , 6) + "..." + tx.to_address?.substring(38),
-                    value: tx.value
+                    value: tx.value,
+                    receipt_cumulative_gas_used: tx.receipt_cumulative_gas_used,
+                    nonce: tx.nonce
                 }
             )
         })
@@ -317,7 +335,7 @@ const Dashboard = () => {
             <div style={{ display: 'flex', justifyContent: 'center',  alignItems: 'center', marginBottom: '50px', height: '80vh', flexDirection: 'column' }}>
                 <Title level={2}>Account dashboard</Title>
                 <Text style={{ marginBottom: '60px' }}>Login with your wallet to access all your transactions and token history as well as more insight on your crypto wallet</Text>
-                <Button type="primary" onClick={() => authenticate({signingMessage:"Hello from CryptoVault :) Sing this request free of charge to authenticate."})}>Login with Metamask <LoginOutlined /></Button>
+                <Button type="primary" onClick={() => authenticate({signingMessage:"Hello from CryptoVault :) Sign this request free of charge to authenticate."})}>Login with Metamask <LoginOutlined /></Button>
                 
             </div>
         )
@@ -325,58 +343,58 @@ const Dashboard = () => {
 
     return(
         <div>
+            {/* executes once user logs in */}
             {address == '' &&  setAddress(user.attributes.accounts[0])}
-            <div>
+            
+            <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '30px', alignItems: 'center'}}>
                 <Title level={3}>Welcome {user.get("username")}</Title>
+                <Button type="primary" onClick={() => {
+                    logout()
+                    //test once deployed
+                    clearState()
+                }} danger>Logout <LogoutOutlined /></Button>
             </div>
-            <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '50px', alignItems: 'center'}}>
+
+            <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '30px', width: '40rem' }}>
+                <Text>Current address: <Select defaultValue={address} style={{ width: 150 }} onChange={(data) => setAddress(data)}>
+                    <Option value={address}>{address.substring(0,6) + "..." + address.substring(38)}</Option>
+                </Select></Text>
                 
-                    <div style={{ display: 'flex', justifyContent: 'space-between', width: '30%'}}>
-                        <Text>Current address: <Select defaultValue={address} style={{ width: 150 }} onChange={(data) => setAddress(data)}>
-                            <Option value={address}>{address.substring(0,6) + "..." + address.substring(38)}</Option>
-                        </Select></Text>
-                        
-                        <Text>Current chain: <Select defaultValue={'0x1'} style={{ width: 120 }} onChange={(data) => setChain(data)}>
-                            {availableNetworks.map(({id, name}) => (
-                                <Option value={id}>{name}</Option>
-                            ))}
-                        </Select></Text>
-                    </div>
-                    <div>
-                        <Button type="primary" onClick={() => fetchData()}>Get Data <DownloadOutlined /></Button>
-                        <Button type="primary" onClick={() => {
-                            logout()
-                            //test once deployed
-                            clearState()
-                        }} danger>Logout <LogoutOutlined /></Button>
-                    </div>
-                </div>
-                {view && (
-                    <>
-                        <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '50px'}}>
-                            <Card title="💸 Wallet Balance" bordered={true} style={{ width: 300 }}>
-                                <Statistic value={walletBalance / 1e18} precision={10} />
-                            </Card>
-                            <Card title="🏷️ Total Transactions" bordered={true} style={{ width: 300 }}>
-                                <Statistic value={txs.length}/>
-                            </Card>
-                            <Card title="🔥 Average Gas Burned" bordered={true} style={{ width: 300 }}>
-                                <Statistic value={totalGas} precision={10}/>
-                            </Card>
-                        </div>
-                        <Title level={4}>Transaction History</Title>
-                        <Table dataSource={transactionData} columns={transactionColumns} />
-                        
-                        <Title level={4}>Tokens</Title>
-                        <Table dataSource={tokenData} columns={tokenColumns} />
+                <Text>Current chain: <Select defaultValue={'0x1'} style={{ width: 120 }} onChange={(data) => setChain(data)}>
+                    {availableNetworks.map(({id, name}) => (
+                        <Option value={id}>{name}</Option>
+                    ))}
+                </Select></Text>
+                <Button type="primary" onClick={() => fetchData()}>Get Data <DownloadOutlined /></Button>
+            </div>
 
-                        <Title level={4}>Token Transactions</Title>
-                        <Table dataSource={tokenTxData} columns={tokenTxColumns} />
 
-                        <Title level={4}>NFTs List</Title>
-                        <Table dataSource={nftData} columns={nftColumns} />
-                    </>
-                )}
+            {view && (
+                <>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '50px'}}>
+                        <Card title="💸 Wallet Balance" bordered={true} style={{ width: 300 }}>
+                            <Statistic value={walletBalance / 1e18} precision={10} />
+                        </Card>
+                        <Card title="🏷️ Total Transactions" bordered={true} style={{ width: 300 }}>
+                            <Statistic value={txs.length}/>
+                        </Card>
+                        <Card title="🔥 Average Gas Burned" bordered={true} style={{ width: 300 }}>
+                            <Statistic value={totalGas} precision={10}/>
+                        </Card>
+                    </div>
+                    <Title level={4}>Transaction History</Title>
+                    <Table dataSource={transactionData} columns={transactionColumns} />
+                    
+                    <Title level={4}>Tokens</Title>
+                    <Table dataSource={tokenData} columns={tokenColumns} />
+
+                    <Title level={4}>Token Transactions</Title>
+                    <Table dataSource={tokenTxData} columns={tokenTxColumns} />
+
+                    <Title level={4}>NFTs List</Title>
+                    <Table dataSource={nftData} columns={nftColumns} />
+                </>
+            )}
         </div>
     )
 
