@@ -49,7 +49,7 @@ const App = () => {
                         <Link to="/">Home</Link>
                         <Link to="/exchanges">Exchanges</Link>
                         <Link to="/news">News</Link>
-                        <Link to="/dashboard">Dashboard</Link>
+                        <Link to="/account/dashboard">Dashboard</Link>
                     </Space>
                 </div>
             </div>

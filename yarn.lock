@@ -4374,11 +4374,6 @@
   "resolved" "https://registry.npmjs.org/crypto-random-string/-/crypto-random-string-1.0.0.tgz"
   "version" "1.0.0"
 
-"cryptocurrency-icons@^0.18.0":
-  "integrity" "sha512-Q8Uq/Vhzcn/B6ouoJk+5Q/Kfp0zz0DjfldPv836OKT5mxgYDZm8vWgMQ5wBuRvT8Z/ZHLeXaBUgJtufPXmG0NQ=="
-  "resolved" "https://registry.npmjs.org/cryptocurrency-icons/-/cryptocurrency-icons-0.18.0.tgz"
-  "version" "0.18.0"
-
 "css-blank-pseudo@^0.1.4":
   "integrity" "sha512-LHz35Hr83dnFeipc7oqFDmsjHdljj3TQtxGGiNWSOsTLIAubSm4TEz8qCaKFpk7idaQ1GfWscF4E6mgpBysA1w=="
   "resolved" "https://registry.npmjs.org/css-blank-pseudo/-/css-blank-pseudo-0.1.4.tgz"
@@ -10929,6 +10924,11 @@
   "version" "3.0.5"
   dependencies:
     "lodash" "^4.17.19"
+
+"react-crypto-icons@^1.0.5":
+  "integrity" "sha512-kh8O55ze+ib2dJOAORcmhCB9a1SuBdj3f1Q6GGzVez/yL8NXklRKz32hKAVAJPCDuR8iXRuG51DrxVGouNdIEw=="
+  "resolved" "https://registry.npmjs.org/react-crypto-icons/-/react-crypto-icons-1.0.5.tgz"
+  "version" "1.0.5"
 
 "react-dev-utils@^11.0.3":
   "integrity" "sha512-dx0LvIGHcOPtKbeiSUM4jqpBl3TcY7CDjZdfOIcKeznE7BWr9dg0iPG90G5yfVQ+p/rGNMXdbfStvzQZEVEi4A=="

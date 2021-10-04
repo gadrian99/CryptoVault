@@ -64,14 +64,14 @@ const Homepage = () => {
          <News simplified/>
 
          {/* <Events /> */}
-         {/* <iframe
+         <iframe
          style={{ width: '100%', height: "700px"}}
             id="onramper-widget"
             title="Onramper widget"
             frameborder="no"
             allow="accelerometer; autoplay; camera; gyroscope; payment;"
             src="https://widget.onramper.com?color=266678&apiKey=pk_test_jWCXCkJiKkFktEIitty3O160jc7OHEj2l0Hq93ngofw0">
-        </iframe> */}
+        </iframe>
         </>
     )
 }
