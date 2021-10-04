@@ -385,7 +385,7 @@ const Dashboard = () => {
 
             {view && (
                 <>  
-                    <div style={{ display: 'flex', justifyContent: 'space-between', flexWrap: 'wrap' }}>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', flexWrap: 'wrap', marginBottom: '50px' }}>
                         <Card title="💸 Wallet Balance" bordered={true} style={{ width: 300 }}>
                             {loading ? <Skeleton paragraph={{ rows: 0 }} /> : <Statistic value={walletBalance / 1e18} precision={10} />}
                         </Card>
