@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom'
 
 import { useGetCryptosQuery } from '../services/cryptoApi'
 
-import { Cryptocurrencies, News, Events } from '../components'
+import { Cryptocurrencies, News, Events, PolarAreaChart } from '../components'
 import Loader from './Loader'
 
 const { Title } = Typography
@@ -16,6 +16,7 @@ const Homepage = () => {
     if (isFetching) return <Loader />;
     return (
         <>
+        <PolarAreaChart coins={data} />
          <Title level={2}>
             Global Crypto Stats
          </Title>
