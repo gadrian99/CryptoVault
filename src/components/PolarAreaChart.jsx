@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Typography, Statistic } from 'antd'
+import { Typography, Statistic, Row, Col } from 'antd'
 
 import { PolarArea } from 'react-chartjs-2'
 import { ArrowUpOutlined, ArrowDownOutlined } from '@ant-design/icons';
@@ -47,14 +47,16 @@ const PolarAreaChart = (coins) => {
               }]
         })
     }
-    
+
 
     return (
-        <div style={{ display: 'flex', justifyContent: 'center', width: '20rem', height: '30rem', flexDirection: 'column', alignItems: 'center' }}>
+        <>
+            <Col xs={12} sm={12} lg={6} style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}>
+                <Statistic title="BTC Market Dominance" value={dominance} prefix={dominant ? <ArrowUpOutlined /> : <ArrowDownOutlined />} suffix="%" precision={2}/>
+                <PolarArea data={data} height={100} width={100} />
+            </Col>
             {/* <Title level={4}>BTC Market Dominance</Title> */}
-            <Statistic title="BTC Market Dominance" value={dominance} prefix={dominant ? <ArrowUpOutlined /> : <ArrowDownOutlined />} suffix="%" precision={2}/>
-            <PolarArea data={data} height={100} width={100} />
-        </div>
+        </>
     )
 }
 
