@@ -12,11 +12,12 @@ const { Title } = Typography
 
 const Homepage = () => {
     const { data, isFetching } = useGetCryptosQuery(10)
+    const { data: allData } = useGetCryptosQuery(100)
+    
     const globalStats = data?.data?.stats
     if (isFetching) return <Loader />;
     return (
         <>
-        <PolarAreaChart coins={data} />
          <Title level={2}>
             Global Crypto Stats
          </Title>
@@ -50,6 +51,13 @@ const Homepage = () => {
                     <Statistic value={millify(globalStats.totalMarkets)}/>
                  </Card>
             </Col>
+         </Row>
+
+         <Row gutter={[32,32]} style={{ display: 'flex', justifyContent: 'center' }}>
+            <PolarAreaChart coins={allData} />
+            <PolarAreaChart coins={allData} />
+            <PolarAreaChart coins={allData} />
+            <PolarAreaChart coins={allData} />
          </Row>
 
          <div className="home-heading-container">
