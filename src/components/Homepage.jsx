@@ -1,6 +1,7 @@
 import React from 'react'
 import millify from 'millify'
 import { Typography, Row, Col, Statistic, Card } from 'antd'
+import { InfoCircleOutlined } from '@ant-design/icons';
 import { Link } from 'react-router-dom'
 
 import { useGetCryptosQuery } from '../services/cryptoApi'
@@ -8,7 +9,7 @@ import { useGetCryptosQuery } from '../services/cryptoApi'
 import { Cryptocurrencies, News, Events, Dominance } from '../components'
 import Loader from './Loader'
 
-const { Title } = Typography
+const { Title, Text } = Typography
 
 const Homepage = () => {
     const { data, isFetching } = useGetCryptosQuery(10)
@@ -53,18 +54,25 @@ const Homepage = () => {
             </Col>
          </Row>
 
-         <Row gutter={[32,32]} style={{ display: 'flex', justifyContent: 'center' }}>
-            <Dominance coins={allData} />
-            <Dominance coins={allData} />
-            <Dominance coins={allData} />
-            <Dominance coins={allData} />
-         </Row>
-
          <div className="home-heading-container">
              <Title level={2} className="home-title">Top 10 Coins</Title>
              <Title level={4} className="show-more"><Link to="/cryptocurrencies">Show more</Link></Title>
          </div>
          <Cryptocurrencies simplified/>
+
+         <Row gutter={[32,32]} style={{ display: 'flex', justifyContent: 'space-evenly' }}>
+            <Dominance coins={allData} />
+            <iframe 
+            src={`https://lunarcrush.com/widgets/galaxyscore?symbol=BTC&interval=1 Week&animation=true&theme=light`}
+            id="galaxy-score" 
+            frameBorder="0" 
+            border="0" 
+            cellspacing="0" 
+            scrolling="no" 
+            style={{ width: '50%', height: '400px', marginTop: '50px'}}>
+          </iframe>
+          <Text italic><InfoCircleOutlined /> The Galaxy Score™ indicates how healthy a coin is by looking at combined performance indicators across markets and social engagement. Display the real-time Galaxy Score™ of any coin.</Text>
+         </Row>
 
          <div className="home-heading-container">
              <Title level={2} className="home-title">Latest Crypto News</Title>
@@ -72,7 +80,7 @@ const Homepage = () => {
          </div>
          <News simplified/>
          
-         <Events />
+         <Events simplified/>
          {/* <iframe
          style={{ width: '100%', height: "700px"}}
             id="onramper-widget"

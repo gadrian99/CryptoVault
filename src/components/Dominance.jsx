@@ -6,7 +6,7 @@ import { ArrowUpOutlined, ArrowDownOutlined } from '@ant-design/icons';
 const { Title } = Typography
 
 const Dominance = (coins) => {
-    const [dominant, setDominant] = useState(false)
+    const [dominant, setDominant] = useState(true)
     const [dominance, setDominance] = useState(0)
     const coinList = coins?.coins?.data?.coins
 

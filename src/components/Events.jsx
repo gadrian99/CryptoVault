@@ -85,17 +85,16 @@ const Events = () => {
         )))
     }
 
-
     if (isFetching) return(<Loader />)
     return (
         <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', width: '100%' }}>
             
-            {/* <Col xs={24} sm={24} xl={20} >
+            <Col xs={24} sm={24} xl={24} style={{ marginTop: '50px' }}>
                 <Title level={2}>
                     Events
                 </Title>
                 <Calendar />
-            </Col> */}
+            </Col>
 
             <Col xs={24} sm={24} xl={24} style={{ marginTop: '50px' }}>
                 <Title level={2}>
