@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom'
 
 import { useGetCryptosQuery } from '../services/cryptoApi'
 
-import { Cryptocurrencies, News, Events, PolarAreaChart } from '../components'
+import { Cryptocurrencies, News, Events, Dominance } from '../components'
 import Loader from './Loader'
 
 const { Title } = Typography
@@ -54,10 +54,10 @@ const Homepage = () => {
          </Row>
 
          <Row gutter={[32,32]} style={{ display: 'flex', justifyContent: 'center' }}>
-            <PolarAreaChart coins={allData} />
-            <PolarAreaChart coins={allData} />
-            <PolarAreaChart coins={allData} />
-            <PolarAreaChart coins={allData} />
+            <Dominance coins={allData} />
+            <Dominance coins={allData} />
+            <Dominance coins={allData} />
+            <Dominance coins={allData} />
          </Row>
 
          <div className="home-heading-container">
@@ -71,8 +71,8 @@ const Homepage = () => {
              <Title level={4} className="show-more"><Link to="/news">Show more</Link></Title>
          </div>
          <News simplified/>
-
-         {/* <Events /> */}
+         
+         <Events />
          {/* <iframe
          style={{ width: '100%', height: "700px"}}
             id="onramper-widget"
@@ -81,7 +81,9 @@ const Homepage = () => {
             allow="accelerometer; autoplay; camera; gyroscope; payment;"
             src="https://widget.onramper.com?color=266678&apiKey=pk_test_jWCXCkJiKkFktEIitty3O160jc7OHEj2l0Hq93ngofw0">
         </iframe> */}
+
         </>
+        
     )
 }
 

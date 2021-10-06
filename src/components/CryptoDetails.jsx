@@ -3,7 +3,7 @@ import HTMLReactParser from 'html-react-parser';
 import { useParams } from 'react-router-dom';
 import millify from 'millify';
 import { Col, Row, Typography, Select } from 'antd';
-import { MoneyCollectOutlined, DollarCircleOutlined, FundOutlined, ExclamationCircleOutlined, StopOutlined, TrophyOutlined, CheckOutlined, NumberOutlined, ThunderboltOutlined } from '@ant-design/icons';
+import { MoneyCollectOutlined, DollarCircleOutlined, FundOutlined, ExclamationCircleOutlined, StopOutlined, TrophyOutlined, CheckOutlined, NumberOutlined, ThunderboltOutlined, InfoCircleOutlined } from '@ant-design/icons';
 
 import { useGetCryptoDetailsQuery, useGetCryptoHistoryQuery } from '../services/cryptoApi';
 import Loader from './Loader'
@@ -17,9 +17,8 @@ const CryptoDetails = () => {
     const [timePeriod, setTimePeriod] = useState('7d')
     const { data, isFetching } = useGetCryptoDetailsQuery(coinId)
     const { data: coinHistory } = useGetCryptoHistoryQuery({ coinId, timePeriod })
-    console.log(coinHistory)
     const cryptoDetails = data?.data?.coin
-
+    console.log(cryptoDetails)
     if (isFetching) return <Loader />;
 
     const time = ['3h', '24h', '7d', '30d', '1y', '3m', '3y', '5y']
@@ -51,7 +50,7 @@ const CryptoDetails = () => {
           <Select defaultValue="7d" className="select-timeperiod" placeholder="Select Timeperiod" onChange={(value) => setTimePeriod(value)}>
             {time.map((date) => <Option key={date}>{date}</Option>)}
           </Select>
-          <LineChart coinHistory={coinHistory} currentPrice={millify(cryptoDetails.price)} coinName={cryptoDetails.name} />
+          <LineChart coinHistory={coinHistory} currentPrice={millify(cryptoDetails.price)} coinName={cryptoDetails.name} color={cryptoDetails.color}/>
           <Col className="stats-container">
             <Col className="coin-value-statistics">
               <Col className="coin-value-statistics-heading">
@@ -84,6 +83,28 @@ const CryptoDetails = () => {
               ))}
             </Col>
           </Col>
+          <iframe 
+            src={`https://lunarcrush.com/widgets/galaxyscore?symbol=${cryptoDetails.symbol}&interval=1 Week&animation=true&theme=light`}
+            id="galaxy-score" 
+            frameBorder="0" 
+            border="0" 
+            cellspacing="0" 
+            scrolling="no" 
+            style={{ width: '100%', height: '400px', marginTop: '50px'}}>
+          </iframe>
+          <Text italic><InfoCircleOutlined /> The Galaxy Score™ indicates how healthy a coin is by looking at combined performance indicators across markets and social engagement. Display the real-time Galaxy Score™ of any coin.</Text>
+          
+          <iframe   
+            src={`https://lunarcrush.com/widgets/altrank?symbol=${cryptoDetails.symbol}&interval=1 Week&animation=true&theme=light`} 
+            id="altRank" 
+            frameBorder="0" 
+            border="0" 
+            cellspacing="0" 
+            scrolling="no" 
+            style={{ width: '100%', height: '400px', marginTop: '50px'}}>
+          </iframe>
+          <Text italic><InfoCircleOutlined /> AltRank™ measures a coin's performance VS. all other coins that we actively support. In general it is a unique measurement that combines ALT coin price performance relative to Bitcoin and other social activity indicators across the entire crypto market. A coin can have a high AltRank of 1 even in a bear market situation.</Text>
+
           <Col className="coin-desc-link">
             <Row className="coin-desc">
               <Title level={3} className="coin-details-heading">What is {cryptoDetails.name}?</Title>

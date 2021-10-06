@@ -5,7 +5,7 @@ import { Col, Row, Typography } from 'antd'
 
 const { Title } = Typography
 
-const LineChart = ({ coinHistory, currentPrice, coinName }) => {
+const LineChart = ({ coinHistory, currentPrice, coinName, color }) => {
     const coinPrice = []
     const coinTimeStamp = []
 
@@ -21,8 +21,8 @@ const LineChart = ({ coinHistory, currentPrice, coinName }) => {
                 label: 'Price in USD',
                 data: coinPrice,
                 fill: false,
-                backgroundColor: '#0071bd',
-                borderColor: '#0071bd'
+                backgroundColor: color,
+                borderColor: '#1890FF'
             }
         ]
     }
@@ -47,7 +47,7 @@ const LineChart = ({ coinHistory, currentPrice, coinName }) => {
                     <Title level={5} className="price-change">{coinHistory?.data?.change}%</Title>
                     <Title level={5} className="current-price">Current {coinName} Price: $ {currentPrice}</Title>
                 </Col>
-                <Line data={data} options={options} />
+                <Line  data={data} options={options} />
             </Row>
         </>
     )

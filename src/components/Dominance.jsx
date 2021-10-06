@@ -5,7 +5,7 @@ import { PolarArea, Doughnut, Pie } from 'react-chartjs-2'
 import { ArrowUpOutlined, ArrowDownOutlined } from '@ant-design/icons';
 const { Title } = Typography
 
-const PolarAreaChart = (coins) => {
+const Dominance = (coins) => {
     const [dominant, setDominant] = useState(false)
     const [dominance, setDominance] = useState(0)
     const coinList = coins?.coins?.data?.coins
@@ -17,7 +17,7 @@ const PolarAreaChart = (coins) => {
 
     const data = () => {
         //coin names / string name
-        let names = ['Bitcoin', 'Altcoins']
+        let names = ['Bitcoin MC ($)', 'Altcoins MC ($)']
         let btcMc = 0
         let altMc = 0
         // coin marketcap / integer marketCap
@@ -51,14 +51,13 @@ const PolarAreaChart = (coins) => {
 
     return (
         <>
-            <Col xs={12} sm={12} lg={6} style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}>
+            <Col xs={12} sm={12} lg={6} style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', marginTop: '2rem' }}>
                 <Statistic title="BTC Market Dominance" value={dominance} prefix={dominant ? <ArrowUpOutlined /> : <ArrowDownOutlined />} suffix="%" precision={2}/>
                 {/* <PolarArea data={data} height={100} width={100} /> */}
-                <Pie data={data} height={100} width={100} />
+                <Doughnut data={data} height={100} width={100} />
             </Col>
-            {/* <Title level={4}>BTC Market Dominance</Title> */}
         </>
     )
 }
 
-export default PolarAreaChart
+export default Dominance
