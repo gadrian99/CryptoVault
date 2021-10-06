@@ -44,7 +44,6 @@ const Events = () => {
     function monthCellRender() {}
 
     function renderEvents() {
-    // general, partnership, software_release, milestone, exchange listing
 
         const colorGenerator = (x) => {
             switch(x) {
@@ -69,21 +68,19 @@ const Events = () => {
         }
         return allEvents?.map((x) => ((
             <>  
-                {console.log(x)}
                 <Badge.Ribbon
                         text={capitalize(x.category)}
                         color={colorGenerator(x.category)}
                 >
-                    <Card hoverable size="small" >
+                    <Card hoverable size="small" style={{ marginBottom: '10px', padding: '1rem' }}>
                         <Meta 
                             avatar={<img alt="event" src={x.project.image.small} />} 
-                            title={<h5>{x.project.name} - {x.created_at}</h5>} 
+                            title={<h5>{x.project.name} - {moment(x.created_at, "YYYY-MM-DDTHH:mm:ss.sssZ").fromNow()}</h5>} 
                             description={x.description} 
                         />
-                        <Text style={{ display: 'flex', justifyContent: 'flex-end'}}>{x.user} - {x.user_title}</Text>
+                        <Text style={{ display: 'flex', justifyContent: 'flex-end', marginTop: '30px' }}>{x.user} - {x.user_title}</Text>
                     </Card>
                 </Badge.Ribbon>
-                
             </>
         )))
     }
@@ -91,18 +88,18 @@ const Events = () => {
 
     if (isFetching) return(<Loader />)
     return (
-        <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', width: '100%'}}>
+        <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', width: '100%' }}>
             
-            <Col xs={24} sm={24} xl={20}>
+            <Col xs={24} sm={24} xl={20} >
                 <Title level={2}>
                     Events
                 </Title>
-                {/* <Calendar dateCellRender={dateCellRender} /> */}
+                <Calendar />
             </Col>
 
-            <Col xs={24} sm={24} xl={24}>
+            <Col xs={24} sm={24} xl={20} style={{ marginTop: '50px' }}>
                 <Title level={2}>
-                        Upcoming Events
+                        Recent Events
                 </Title>
                 {/* <Skeleton avatar paragraph={{ rows: 4 }} /> */}
                 {renderEvents()}
