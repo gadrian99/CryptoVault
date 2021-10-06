@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { Typography, Statistic, Row, Col } from 'antd'
 
-import { PolarArea } from 'react-chartjs-2'
+import { PolarArea, Doughnut, Pie } from 'react-chartjs-2'
 import { ArrowUpOutlined, ArrowDownOutlined } from '@ant-design/icons';
 const { Title } = Typography
 
@@ -53,7 +53,8 @@ const PolarAreaChart = (coins) => {
         <>
             <Col xs={12} sm={12} lg={6} style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}>
                 <Statistic title="BTC Market Dominance" value={dominance} prefix={dominant ? <ArrowUpOutlined /> : <ArrowDownOutlined />} suffix="%" precision={2}/>
-                <PolarArea data={data} height={100} width={100} />
+                {/* <PolarArea data={data} height={100} width={100} /> */}
+                <Pie data={data} height={100} width={100} />
             </Col>
             {/* <Title level={4}>BTC Market Dominance</Title> */}
         </>

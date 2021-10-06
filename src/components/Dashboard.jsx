@@ -128,7 +128,6 @@ const Dashboard = () => {
         }
         gasTotal(txs)
         setView(true)
-
     }
 
     // Transactions Table Data
