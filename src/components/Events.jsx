@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Calendar, Badge, Typography, Skeleton, Row, Col, Card, Select, Button } from 'antd';
+import { Calendar, Badge, Typography, Skeleton, Row, Col, Card, Select, Button, Pagination } from 'antd';
 import { DownloadOutlined } from '@ant-design/icons';
 
 import { useGetStatusUpdateQuery } from "../services/coinGeckoApi"
@@ -12,6 +12,8 @@ const { Option } = Select
 const Events = () => {
     const [projectType, setProjectType] = useState('')
     const [currentCategory, setCurrentCategory] = useState('')
+    const [currentPage, setCurrentPage] = useState(1)
+    const [perPage, setPerPage] = useState(10)
     const [date, setDate] = useState('')
     const [secondaryDate, setSecondaryDate] = useState('')
     const [currentUpdates, setCurrentUpdates] = useState('')
@@ -69,28 +71,27 @@ const Events = () => {
 
     function renderEvents() {
 
+        const lastIndex = currentPage * perPage
+        const firstIndex = lastIndex - perPage
+        const current = statusUpdates.slice(firstIndex, lastIndex)
+
         const colorGenerator = (x) => {
             switch(x) {
                 case 'general':
                     return '#F68701'
-                    break;
                 case 'partnership':
                     return '#2D4B8B'
-                    break;
                 case 'software_release':
                     return '#7400B2'
-                    break;
                 case 'milestone':
                     return '#00B347'
-                    break;
                 case 'exchange_listing':
                     return '#B30000'
-                    break;
                 default:
                     break
             }
         }
-        return statusUpdates?.map((x) => ((
+        return current?.map((x) => ((
             <>  
                 <Badge.Ribbon
                         text={capitalize(x.category)}
@@ -121,9 +122,9 @@ const Events = () => {
         </>
     )
 
+    
     return (
         <>
-            {!isFetching && console.log('e')}
             <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', width: '100%' }}>
             
                 <Col xs={24} sm={24} xl={24}>
@@ -135,7 +136,6 @@ const Events = () => {
 
                 <Col xs={24} sm={24} xl={24} style={{ marginTop: '50px' }}>
                     <Row style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center'}}>
-                        
                         <Title level={2} >
                                 Status Updates
                         </Title>
@@ -167,7 +167,8 @@ const Events = () => {
                         </div>
                     </Row>
                     {renderEvents()}
-
+                    <Pagination defaultCurrent={currentPage} total={statusUpdates.length} onChange={(e) => setCurrentPage(e)} />
+                   
                 </Col>
                 
                 
