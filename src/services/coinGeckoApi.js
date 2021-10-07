@@ -14,7 +14,7 @@ export const coinGeckoApi = createApi({
     baseQuery: fetchBaseQuery({ baseUrl }), 
     endpoints: (builder) => ({
         getStatusUpdate: builder.query({
-            query: () => createRequest(`/status_updates`)
+            query: ({ projectType, currentCategory }) => createRequest(`/status_updates?project_type=${projectType}&category=${currentCategory}`)
         })
     })
 })

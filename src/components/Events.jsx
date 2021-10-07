@@ -1,16 +1,40 @@
 import React, { useState } from 'react'
-import { Calendar, Badge, Typography, Skeleton, Row, Col, Card } from 'antd';
+import { Calendar, Badge, Typography, Skeleton, Row, Col, Card, Select, Button } from 'antd';
+import { DownloadOutlined } from '@ant-design/icons';
+
 import { useGetStatusUpdateQuery } from "../services/coinGeckoApi"
 import Loader from './Loader'
 import moment from 'moment'
 const { Title, Text, Paragraph } = Typography
 const { Meta } = Card
+const { Option } = Select
 
 const Events = () => {
-    const { data, isFetching } = useGetStatusUpdateQuery()
-    const [selectedEvents, setSelectedEvents] = useState([])
-    const allEvents = data?.status_updates
+    const [projectType, setProjectType] = useState('')
+    const [currentCategory, setCurrentCategory] = useState('')
+    const [date, setDate] = useState('')
+    const [secondaryDate, setSecondaryDate] = useState('')
+    const [currentUpdates, setCurrentUpdates] = useState('')
     
+    const { data, isFetching } = useGetStatusUpdateQuery({ projectType, currentCategory })
+
+    const statusUpdates = data?.status_updates
+    
+    const filters = [
+        { id: 'general', type: 'General'},
+        { id: 'milestone', type: 'Milestone'},
+        { id: 'partnership', type: 'Partnership'},
+        { id: 'exchange_listing', type: 'Exchange listing'},
+        { id: 'software_release', type: 'Software release'},
+        { id: 'fund_movement', type: 'Fund movement'},
+        { id: 'new_listings', type: 'New listings'},
+    ]
+
+    const projecttypes = [
+        { id: 'coin', type: 'Coin'},
+        { id: 'market', type: 'Market'}
+    ]
+
     function capitalize(string) {
         return string.charAt(0).toUpperCase() + string.slice(1);
     }
@@ -66,7 +90,7 @@ const Events = () => {
                     break
             }
         }
-        return allEvents?.map((x) => ((
+        return statusUpdates?.map((x) => ((
             <>  
                 <Badge.Ribbon
                         text={capitalize(x.category)}
@@ -85,28 +109,70 @@ const Events = () => {
         )))
     }
 
-    if (isFetching) return(<Loader />)
+    if (isFetching) return(
+        <>  
+            <Title level={2}>
+                Events
+            </Title>
+            <Skeleton avatar paragraph={{ rows: 4 }} />
+            <Skeleton avatar paragraph={{ rows: 4 }} />
+            <Skeleton avatar paragraph={{ rows: 4 }} />
+            <Skeleton avatar paragraph={{ rows: 4 }} />
+        </>
+    )
+
     return (
-        <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', width: '100%' }}>
+        <>
+            {!isFetching && console.log('e')}
+            <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', width: '100%' }}>
             
-            <Col xs={24} sm={24} xl={24} style={{ marginTop: '50px' }}>
-                <Title level={2}>
-                    Events
-                </Title>
-                <Calendar />
-            </Col>
+                <Col xs={24} sm={24} xl={24}>
+                    <Title level={2}>
+                        Events
+                    </Title>
+                    {/* <Calendar /> */}
+                </Col>
 
-            <Col xs={24} sm={24} xl={24} style={{ marginTop: '50px' }}>
-                <Title level={2}>
-                        Recent Events
-                </Title>
-                {/* <Skeleton avatar paragraph={{ rows: 4 }} /> */}
-                {renderEvents()}
+                <Col xs={24} sm={24} xl={24} style={{ marginTop: '50px' }}>
+                    <Row style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center'}}>
+                        
+                        <Title level={2} >
+                                Status Updates
+                        </Title>
 
-            </Col>
-            
-            
-        </div>
+                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', width: '25rem'}}>
+                            <div>
+                                <Text>Type: </Text>
+                                <Select defaultValue={projectType} style={{ width: 150 }} onChange={(e) => setProjectType(e)}>
+                                    <Option value=" ">All</Option>
+                                    {projecttypes.map(x => ((
+                                        <>
+                                            <Option value={x.id}>{x.type}</Option>
+                                        </>
+                                    )))}
+                                </Select>
+                            </div>
+                            
+                            <div>
+                                <Text>Filter: </Text>
+                                <Select defaultValue={currentCategory} style={{ width: 150 }} onChange={(e) => setCurrentCategory(e)}>
+                                    <Option value=" ">All</Option>
+                                    {filters.map(x => ((
+                                        <>
+                                            <Option value={x.id}>{x.type}</Option>
+                                        </>
+                                    )))}
+                                </Select>
+                            </div>
+                        </div>
+                    </Row>
+                    {renderEvents()}
+
+                </Col>
+                
+                
+            </div>
+        </>
     )
 }
 

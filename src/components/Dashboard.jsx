@@ -3,8 +3,6 @@ import millify from 'millify'
 import { Typography, Button, Table, Card, Statistic, Select, Skeleton } from 'antd'
 import { DownloadOutlined, LoginOutlined, LogoutOutlined } from '@ant-design/icons';
 import { useMoralis } from "react-moralis";
-import Loader from './Loader'
-import Icon from "react-crypto-icons";
 
 const { Title, Text } = Typography
 const { Option } = Select
