@@ -76,16 +76,12 @@ a:hover {
   align-items: center;
 }
 
-/* @media screen and (max-width: 1300px) {
-  .main {
-    margin-left: 50px;
-  }
+@media screen and (max-width: 1300px) {
+  
 }
 
 @media screen and (max-width: 1170px) {
-  .main {
-    margin-left: 50px;
-  }
+  
 }
 
 @media screen and (max-width: 1000px) {
@@ -101,7 +97,7 @@ a:hover {
   }
 
   .navbar {
-    visibility: hidden;
+    display: none;
   }
 
   .main {
@@ -133,7 +129,7 @@ a:hover {
   .show-more {
     font-size: 1.3rem !important;
   }
-} */
+}
 
 .coin-detail-container {
   margin: 30px;

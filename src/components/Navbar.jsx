@@ -65,7 +65,7 @@ const Navbar = () => {
                     </Menu.Item>
                     <Dropdown overlay={menu}>
                         <Menu.Item icon={<UserOutlined />}>
-                            Account    <DownOutlined />
+                            Account <DownOutlined />
                         </Menu.Item>
                     </Dropdown>
                 </Menu>

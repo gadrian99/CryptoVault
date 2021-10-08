@@ -1,11 +1,8 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
 
-const coinGeckoApiHeaders = {
-    'x-rapidapi-host': 'coingecko.p.rapidapi.com',
-    'x-rapidapi-key': 'cdcdfa6f8dmsh5757f9d36e648f6p1cbc92jsn66072d8cd192'
-}
+const coinGeckoApiHeaders = {}
 
-const baseUrl = "https://coingecko.p.rapidapi.com/"
+const baseUrl = "https://api.coingecko.com/api/v3"
 
 const createRequest = (url) => ({ url, headers: coinGeckoApiHeaders})
 
@@ -15,10 +12,15 @@ export const coinGeckoApi = createApi({
     endpoints: (builder) => ({
         getStatusUpdate: builder.query({
             query: ({ projectType, currentCategory }) => createRequest(`/status_updates?project_type=${projectType}&category=${currentCategory}`)
+        }),
+        getTokenData: builder.query({
+            query: ({ id, contract_address  }) => createRequest(`/simple/token_price/${id}?contract_addresses=${contract_address}&vs_currencies=usd&include_market_cap=true&include_24hr_vol=true&include_24hr_change=true&include_last_updated_at=true`)
         })
+        
     })
-})
+})  
 
 export const {
-    useGetStatusUpdateQuery
+    useGetStatusUpdateQuery,
+    useGetTokenDataQuery
 } = coinGeckoApi

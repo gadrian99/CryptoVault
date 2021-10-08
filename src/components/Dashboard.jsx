@@ -3,6 +3,10 @@ import millify from 'millify'
 import { Typography, Button, Table, Card, Statistic, Select, Skeleton } from 'antd'
 import { DownloadOutlined, LoginOutlined, LogoutOutlined } from '@ant-design/icons';
 import { useMoralis } from "react-moralis";
+import Loader from './Loader'
+import Icon from "react-crypto-icons";
+
+import { useGetTokenDataQuery } from '../services/coinGeckoApi'
 
 const { Title, Text } = Typography
 const { Option } = Select
@@ -10,7 +14,8 @@ const { Meta } = Card;
 
 const Dashboard = () => {
     const { Moralis, logout, isAuthenticated, authenticate, user } = useMoralis()
-
+    const { data: tokenGecko } = useGetTokenDataQuery({ id: 'ethereum', contract_address: '0xf629cbd94d3791c9250152bd8dfbdf380e2a3b9c' })
+    console.log(tokenGecko)
     // Moralis.onDisconnect((data) => alert('disconnected from site' , data))
     // Moralis.onConnect((data) => alert('connected to site', data))
     // Setup state for network. Initialize to current established in wallet
@@ -29,47 +34,24 @@ const Dashboard = () => {
     const [loading, setLoading] = useState(false)
     const [error, setError] = useState({})
 
-    const availableNetworks = [
-        {
-            id: '0x1',
-            name: 'Eth',
-        },
-        {
-            id: '0x3',
-            name: 'Ropsten',
-        },
-        {
-            id: '0x4',
-            name: 'Rinkeby',
-        },
-        {
-            id: '0x5',
-            name: 'Goerli',
-        },
-        {
-            id: '0x2a',
-            name: 'Kovan',
-        },
-        {
-            id: '0x38',
-            name: 'Bsc',
-        },
-        {
-            id: '0x61',
-            name: 'Bsc testnet',
-        },
-        {
-            id: '0x89',
-            name: 'Matic',
-        },
-        {
-            id: '0x13881',
-            name: 'Matic testnet',
-        },
-        {
-            id: '0xa86a',
-            name: 'Avalanche',
-        }
+    const moralisNetworks = [
+        {id: '0x1', name: 'Ethereum'},
+        {id: '0x3', name: 'Ropsten',},
+        {id: '0x4', name: 'Rinkeby'},
+        {id: '0x5', name: 'Goerli'},
+        {id: '0x2a', name: 'Kovan'},
+        {id: '0x38', name: 'Bsc'},
+        {id: '0x61', name: 'Bsc Testnet'},
+        {id: '0x89', name: 'Matic'},
+        {id: '0x13881', name: 'Matic Testnet'},
+        {id: '0xa86a', name: 'Avalanche'}
+    ]
+
+    const geckoNetworks = [
+        {id: 'ethereum', name: 'Ethereum'},
+        {id: 'ethereum', name: 'Binance'},
+        {id: 'ethereum', name: 'Matic'},
+        {id: 'ethereum', name: 'Avalanche'}
     ]
 
     const clearState = () => {
@@ -84,9 +66,9 @@ const Dashboard = () => {
         setView(false)
     }
 
-    useEffect(async () => {
-        // fetchData()
-    })
+    // useEffect(async () => {
+    //     fetchData()
+    // })
 
 
 
@@ -126,6 +108,7 @@ const Dashboard = () => {
         }
         gasTotal(txs)
         setView(true)
+
     }
 
     // Transactions Table Data
@@ -212,6 +195,11 @@ const Dashboard = () => {
             key: 'address',
         },
         {
+            title: 'Amount',
+            dataIndex: 'amount',
+            key: 'amount'
+        },
+        {
             title: 'Balance',
             dataIndex: 'balance',
             key: 'balance',
@@ -220,14 +208,23 @@ const Dashboard = () => {
 
     const generateTokenData = () => {
         let data = []
-
-        tokens.map((token) => {
+        
+        tokens.map(async (token) => {
+            const options = {
+                address: token.token_address,
+                chain: chain
+            }
+            
+            const price = await Moralis.Web3API.token.getTokenPrice(options)
+            const x = token.balance / Math.pow(10, token.decimals) * price
+            console.log(x)
             data.push(
                 {
                     symbol: token.symbol,
                     name: token.name,
                     address: token.token_address?.substring(0 , 6) + "..." + token.token_address?.substring(38),
-                    balance: token.balance / Math.pow(10, token.decimals)
+                    balance: token.balance / Math.pow(10, token.decimals),
+                    amount: x.toFixed(2)
                 }
             )
         })
@@ -372,7 +369,7 @@ const Dashboard = () => {
                 </Select></Text>
 
                 <Text>Current chain: <Select defaultValue={'0x1'} style={{ width: 120 }} onChange={(data) => setChain(data)}>
-                    {availableNetworks.map(({id, name}) => (
+                    {moralisNetworks.map(({id, name}) => (
                         <Option value={id}>{name}</Option>
                     ))}
                 </Select></Text>
