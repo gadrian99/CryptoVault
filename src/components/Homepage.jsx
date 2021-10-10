@@ -5,6 +5,7 @@ import { InfoCircleOutlined } from '@ant-design/icons';
 import { Link } from 'react-router-dom'
 
 import { useGetCryptosQuery } from '../services/cryptoApi'
+import { useGetTrendingCoinsQuery, useGetGlobalDataQuery } from '../services/coinGeckoApi'
 
 import { Cryptocurrencies, News, Events, Dominance } from '../components'
 import Loader from './Loader'
@@ -14,7 +15,14 @@ const { Title, Text } = Typography
 const Homepage = () => {
     const { data, isFetching } = useGetCryptosQuery(10)
     const { data: allData } = useGetCryptosQuery(100)
+    const { data: xCoins } = useGetTrendingCoinsQuery()
+    const { data: geckoGlobalData} = useGetGlobalDataQuery()
+    const { 
+        market_cap_change_percentage_24h_usd: dailyChange,
+    } = geckoGlobalData?.data
+    const trendingCoins = xCoins?.data
     const globalStats = data?.data?.stats
+    
     if (isFetching) return <Loader />;
     return (
         <>
@@ -22,9 +30,18 @@ const Homepage = () => {
             Global Crypto Stats
          </Title>
          <Row gutter={[32,32]} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', width: '100%'}}>
-             <Col xs={12} sm={12} lg={8}>
+            <Col xs={12} sm={12} lg={8}>
+                <Statistic title="📈 24h Market Change" value={dailyChange} prefix="~" suffix="%" precision={2}/>
+            </Col>
+            <Col xs={12} sm={12} lg={8}>
+                <Statistic title="📊 Total 24h Volume"value={'$' + millify(globalStats.total24hVolume)}/>
+            </Col>
+            <Col xs={12} sm={12} lg={8}>
+                <Statistic title="♾️ Total Market Cap" value={'$' + millify(globalStats.totalMarketCap)}/>
+            </Col>
+            <Col xs={12} sm={12} lg={8}>
                  <Link to='/cryptocurrencies'>
-                    <Statistic title="₿ Total Cryptocurrencies" value={globalStats.total}/>
+                    <Statistic title="✨ Total Cryptocurrencies" value={globalStats.total}/>
                  </Link>
             </Col>
             <Col xs={12} sm={12} lg={8}>
@@ -32,15 +49,9 @@ const Homepage = () => {
                     <Statistic title="💱 Total Exchanges" value={millify(globalStats.totalExchanges)}/>
                  </Link>
             </Col>
-            <Col xs={12} sm={12} lg={8}>
-                <Statistic title="♾️ Total Market Cap" value={'$' + millify(globalStats.totalMarketCap)}/>
-            </Col>
-            <Col xs={12} sm={12} lg={8}>
-                <Statistic title="📈 Total 24h Volume"value={'$' + millify(globalStats.total24hVolume)}/>
-            </Col>
-            <Col xs={12} sm={12} lg={8}>
-                <Statistic title="🏛️ Total Markets" value={millify(globalStats.totalMarkets)}/>
-            </Col>
+            
+            
+            
             <Col xs={12} sm={12} lg={8}>
                 <Statistic title="🏛️ Total Markets" value={millify(globalStats.totalMarkets)}/>
             </Col>
@@ -58,6 +69,7 @@ const Homepage = () => {
             style={{ width: '50%', height: '400px', marginTop: '50px'}}>
           </iframe>
           <Text italic><InfoCircleOutlined /> The Galaxy Score™ indicates how healthy a coin is by looking at combined performance indicators across markets and social engagement. Display the real-time Galaxy Score™ of any coin.</Text>
+          
          </Row>
 
          <div className="home-heading-container">

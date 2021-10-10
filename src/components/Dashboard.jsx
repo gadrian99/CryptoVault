@@ -1,12 +1,11 @@
 import React, { useState, useEffect }from 'react'
 import millify from 'millify'
+import axios from 'axios'
 import { Typography, Button, Table, Card, Statistic, Select, Skeleton } from 'antd'
 import { DownloadOutlined, LoginOutlined, LogoutOutlined } from '@ant-design/icons';
 import { useMoralis } from "react-moralis";
 import Loader from './Loader'
 import Icon from "react-crypto-icons";
-
-import { useGetTokenDataQuery } from '../services/coinGeckoApi'
 
 const { Title, Text } = Typography
 const { Option } = Select
@@ -14,8 +13,7 @@ const { Meta } = Card;
 
 const Dashboard = () => {
     const { Moralis, logout, isAuthenticated, authenticate, user } = useMoralis()
-    const { data: tokenGecko } = useGetTokenDataQuery({ id: 'ethereum', contract_address: '0xf629cbd94d3791c9250152bd8dfbdf380e2a3b9c' })
-    console.log(tokenGecko)
+   
     // Moralis.onDisconnect((data) => alert('disconnected from site' , data))
     // Moralis.onConnect((data) => alert('connected to site', data))
     // Setup state for network. Initialize to current established in wallet
@@ -25,6 +23,7 @@ const Dashboard = () => {
     const [chain, setChain] = useState('0x1')
     const [txs, setTxs] = useState([])
     const [tokens, setTokens] = useState([])
+    const [tokenChartData, setTokenChartData] = useState([])
     const [tokenTxs, setTokensTxs] = useState([])
     const [nfts, setNfts] = useState([])
     const [totalGas, setTotalGas] = useState(0)
@@ -33,25 +32,18 @@ const Dashboard = () => {
 
     const [loading, setLoading] = useState(false)
     const [error, setError] = useState({})
-
+    
     const moralisNetworks = [
-        {id: '0x1', name: 'Ethereum'},
+        {id: '0x1', name: 'Ethereum', gecko: 'ethereum'},
         {id: '0x3', name: 'Ropsten',},
         {id: '0x4', name: 'Rinkeby'},
         {id: '0x5', name: 'Goerli'},
         {id: '0x2a', name: 'Kovan'},
-        {id: '0x38', name: 'Bsc'},
+        {id: '0x38', name: 'Bsc', gecko: 'binance-smart-chain'},
         {id: '0x61', name: 'Bsc Testnet'},
-        {id: '0x89', name: 'Matic'},
+        {id: '0x89', name: 'Matic', gecko: 'polygon-pos'},
         {id: '0x13881', name: 'Matic Testnet'},
-        {id: '0xa86a', name: 'Avalanche'}
-    ]
-
-    const geckoNetworks = [
-        {id: 'ethereum', name: 'Ethereum'},
-        {id: 'ethereum', name: 'Binance'},
-        {id: 'ethereum', name: 'Matic'},
-        {id: 'ethereum', name: 'Avalanche'}
+        {id: '0xa86a', name: 'Avalanche', gecko: 'avalanche'}
     ]
 
     const clearState = () => {
@@ -100,13 +92,13 @@ const Dashboard = () => {
                 .then((data) => setTokensTxs(data.result))
             await Moralis.Web3API.account.getNFTs(options)
                 .then((data) => setNfts(data.result))
-            await Moralis.Web3API.token.getTokenMetadata().then((x) => console.log(x))
-
+            await gasTotal(txs)
+            await setTokenChartData(generateTokenData)
         } catch (err) {
             setError(err)
             console.log(err)
         }
-        gasTotal(txs)
+        console.log(tokenChartData)
         setView(true)
 
     }
@@ -199,38 +191,52 @@ const Dashboard = () => {
             dataIndex: 'amount',
             key: 'amount'
         },
-        {
-            title: 'Balance',
-            dataIndex: 'balance',
-            key: 'balance',
-        }
+        // {
+        //     title: 'Balance',
+        //     dataIndex: 'balance',
+        //     key: 'balance',
+        // }
     ]
 
     const generateTokenData = () => {
         let data = []
         
+        const exchange = (x) => {
+            switch(x) {
+                case '0x1':
+                    return 'uniswap-v3' // ethereum dex
+                case '0x38':
+                    return 'pancakeswap-v2' // binance dex
+                case '0x89': 
+                    return 'quickswap' // polygon dex
+            }
+        }
+
         tokens.map(async (token) => {
             const options = {
                 address: token.token_address,
-                chain: chain
+                chain: chain,
+                exchange: exchange(chain)
             }
-            
-            const price = await Moralis.Web3API.token.getTokenPrice(options)
-            const x = token.balance / Math.pow(10, token.decimals) * price
-            console.log(x)
+
+            const price = await Moralis.Web3API.token.getTokenPrice(options);
+
+            const x = token.balance / Math.pow(10, token.decimals) * price.usdPrice
+
             data.push(
                 {
                     symbol: token.symbol,
                     name: token.name,
                     address: token.token_address?.substring(0 , 6) + "..." + token.token_address?.substring(38),
-                    balance: token.balance / Math.pow(10, token.decimals),
-                    amount: x.toFixed(2)
+                    amount: token.balance / Math.pow(10, token.decimals),
+                    // balance: parseFloat(x.toFixed(2))
                 }
             )
         })
+        
         return data
     }
-    const tokenData = generateTokenData()
+    
 
     // Token Transactions
     const tokenTxColumns = [
@@ -400,7 +406,7 @@ const Dashboard = () => {
                     <Table loading={loading} dataSource={transactionData} columns={transactionColumns} />
 
                     <Title level={4}>Tokens</Title>
-                    <Table loading={loading} dataSource={tokenData} columns={tokenColumns} />
+                    <Table loading={loading} dataSource={tokenChartData} columns={tokenColumns} />
 
                     <Title level={4}>Token Transactions</Title>
                     <Table loading={loading} dataSource={tokenTxData} columns={tokenTxColumns} />

@@ -14,13 +14,20 @@ export const coinGeckoApi = createApi({
             query: ({ projectType, currentCategory }) => createRequest(`/status_updates?project_type=${projectType}&category=${currentCategory}`)
         }),
         getTokenData: builder.query({
-            query: ({ id, contract_address  }) => createRequest(`/simple/token_price/${id}?contract_addresses=${contract_address}&vs_currencies=usd&include_market_cap=true&include_24hr_vol=true&include_24hr_change=true&include_last_updated_at=true`)
+            query: ({ geckoChain, contract_address  }) => createRequest(`/simple/token_price/${geckoChain}?contract_addresses=${contract_address}&vs_currencies=usd&include_market_cap=true&include_24hr_vol=true&include_24hr_change=true&include_last_updated_at=true`)
+        }),
+        getTrendingCoins: builder.query({
+            query: () => createRequest(`/search/trending`)
+        }), 
+        getGlobalData: builder.query({
+            query: () => createRequest(`/global`)
         })
-        
     })
 })  
 
 export const {
     useGetStatusUpdateQuery,
-    useGetTokenDataQuery
+    useGetTokenDataQuery,
+    useGetTrendingCoinsQuery,
+    useGetGlobalDataQuery,
 } = coinGeckoApi

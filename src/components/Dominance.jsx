@@ -6,7 +6,6 @@ import { ArrowUpOutlined, ArrowDownOutlined } from '@ant-design/icons';
 const { Title } = Typography
 
 const Dominance = (coins) => {
-    const [dominant, setDominant] = useState(true)
     const [dominance, setDominance] = useState(0)
     const coinList = coins?.coins?.data?.coins
 
@@ -36,7 +35,6 @@ const Dominance = (coins) => {
         let marketcaps = [btcMc, altMc]
         let totalMc = btcMc + altMc
         setDominance(percentage(btcMc, totalMc))
-        dominance >= 50 && setDominant(true)
 
         return ({
             labels: names,
@@ -52,7 +50,7 @@ const Dominance = (coins) => {
     return (
         <>
             <Col xs={12} sm={12} lg={6} style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', marginTop: '2rem' }}>
-                <Statistic title="BTC Market Dominance" value={dominance} prefix={dominant ? <ArrowUpOutlined /> : <ArrowDownOutlined />} suffix="%" precision={2}/>
+                <Statistic title="BTC Market Dominance" value={dominance} prefix="~" suffix="%" precision={2}/>
                 {/* <PolarArea data={data} height={100} width={100} /> */}
                 <Doughnut data={data} height={100} width={100} />
             </Col>
