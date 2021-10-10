@@ -21,6 +21,9 @@ export const coinGeckoApi = createApi({
         }), 
         getGlobalData: builder.query({
             query: () => createRequest(`/global`)
+        }),
+        getGlobalDefiData: builder.query({
+            query: () => createRequest(`/global/decentralized_finance_defi`)
         })
     })
 })  
@@ -30,4 +33,5 @@ export const {
     useGetTokenDataQuery,
     useGetTrendingCoinsQuery,
     useGetGlobalDataQuery,
+    useGetGlobalDefiDataQuery
 } = coinGeckoApi

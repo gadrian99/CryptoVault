@@ -97,7 +97,7 @@ const Events = () => {
                         text={capitalize(x.category)}
                         color={colorGenerator(x.category)}
                 >
-                    <Card hoverable size="small" style={{ marginBottom: '10px', padding: '1rem' }}>
+                    <Card hoverable size="small" style={{ marginBottom: '10px', padding: '1rem', borderRadius: '1rem' }}>
                         <Meta 
                             avatar={<img alt="event" src={x.project.image.small} />} 
                             title={<h5>{x.project.name} - {moment(x.created_at, "YYYY-MM-DDTHH:mm:ss.sssZ").fromNow()}</h5>} 

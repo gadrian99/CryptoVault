@@ -90,7 +90,7 @@ const CryptoDetails = () => {
             border="0" 
             cellspacing="0" 
             scrolling="no" 
-            style={{ width: '100%', height: '400px', marginTop: '50px'}}>
+            style={{ width: '100%', height: '400px', marginTop: '50px', borderRadius: '1rem' }}>
           </iframe>
           <Text italic><InfoCircleOutlined /> The Galaxy Score™ indicates how healthy a coin is by looking at combined performance indicators across markets and social engagement. Display the real-time Galaxy Score™ of any coin.</Text>
           
@@ -101,7 +101,7 @@ const CryptoDetails = () => {
             border="0" 
             cellspacing="0" 
             scrolling="no" 
-            style={{ width: '100%', height: '400px', marginTop: '50px'}}>
+            style={{ width: '100%', height: '400px', marginTop: '50px', borderRadius: '1rem' }}>
           </iframe>
           <Text italic><InfoCircleOutlined /> AltRank™ measures a coin's performance VS. all other coins that we actively support. In general it is a unique measurement that combines ALT coin price performance relative to Bitcoin and other social activity indicators across the entire crypto market. A coin can have a high AltRank of 1 even in a bear market situation.</Text>
 

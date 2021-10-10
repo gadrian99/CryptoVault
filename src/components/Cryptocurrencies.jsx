@@ -25,12 +25,13 @@ const Cryptocurrencies = ({ simplified }) => {
     return (
         <>
             {!simplified && (
-                <div className="search-crypto">
-                    <Title level={2}>
-                        Top Coins by Market Cap
-                    </Title>
-                    <Input placeholder="Search Cryptocurrency" onChange={(e) => setSearchTerm(e.target.value)} style={{ width: '250px', height: '40px'}} />
-                </div>
+                
+                    <div className="search-crypto">
+                        <Title level={2}>
+                            Top Coins by Market Cap
+                        </Title>
+                        <Input placeholder="Search Cryptocurrency" onChange={(e) => setSearchTerm(e.target.value)} style={{ width: '250px', height: '40px'}} />
+                    </div>
             )}
 
             <Row gutter={[32,32]} className="crypto-card-container">
@@ -41,6 +42,7 @@ const Cryptocurrencies = ({ simplified }) => {
                                 title={`${currency.rank}. ${currency.name}`}
                                 extra={<img className="crypto-image" src={currency.iconUrl} />}
                                 hoverable
+                                style={{ borderRadius: '1rem' }}
                             >
                                 <p>Price: ${millify(currency.price)}</p>
                                 <p>Market Cap: ${millify(currency.marketCap)}</p>

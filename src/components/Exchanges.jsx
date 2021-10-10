@@ -28,7 +28,7 @@ const Exchanges = () => {
       <Row>
         {exchangesList.map((exchange) => (
           <Col span={24}>
-            <Collapse>
+            <Collapse style={{ borderRadius: '1rem 1rem 0 0' }}>
               <Panel
                 key={exchange.id}
                 showArrow={false}

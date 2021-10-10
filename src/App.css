@@ -76,7 +76,7 @@ a:hover {
   align-items: center;
 }
 
-@media screen and (max-width: 1300px) {
+/* @media screen and (max-width: 1300px) {
   
 }
 
@@ -88,9 +88,9 @@ a:hover {
   .main {
     margin-left: 100px;
   }
-}
+} */
 
-@media screen and (max-width: 800px) {
+/* @media screen and (max-width: 800px) {
   .app {
     flex-direction: column;
     overflow: hidden;
@@ -129,7 +129,7 @@ a:hover {
   .show-more {
     font-size: 1.3rem !important;
   }
-}
+} */
 
 .coin-detail-container {
   margin: 30px;
