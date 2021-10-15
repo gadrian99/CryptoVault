@@ -4,8 +4,6 @@ import axios from 'axios'
 import { Typography, Button, Table, Card, Statistic, Select, Skeleton } from 'antd'
 import { DownloadOutlined, LoginOutlined, LogoutOutlined } from '@ant-design/icons';
 import { useMoralis } from "react-moralis";
-import Loader from './Loader'
-import Icon from "react-crypto-icons";
 
 const { Title, Text } = Typography
 const { Option } = Select
@@ -98,7 +96,6 @@ const Dashboard = () => {
             setError(err)
             console.log(err)
         }
-        console.log(tokenChartData)
         setView(true)
 
     }

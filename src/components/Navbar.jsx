@@ -19,7 +19,7 @@ const Navbar = () => {
     }, [])
 
     useEffect(() => {
-        if(screenSize < 800) {
+        if(screenSize < 768) {
             setActiveMenu(false)
         } else {
             setActiveMenu(true)
@@ -43,8 +43,10 @@ const Navbar = () => {
     return (
         <div className="nav-container">
             <div className="logo-container">
-                <Link to="/"><img src={icon} style={{ height: '100px' }}/></Link>
-                <Button className="menu-control-container" onClick={() => setActiveMenu(!activeMenu)}><MenuOutlined /></Button>
+                <Link style={{ display: 'flex' }} to="/"><p className="font-face-at">CRYPTO</p><p className="font-face-at orange">VAULT</p></Link>  
+                <Button className="menu-control-container" type="text" onClick={() => setActiveMenu(!activeMenu)}>
+                    <MenuOutlined />
+                </Button>
             </div>
             {activeMenu && (
                 <Menu theme="dark">
@@ -63,11 +65,11 @@ const Navbar = () => {
                     <Menu.Item icon={<CalendarOutlined />}>
                         <Link to="/events">Events</Link>
                     </Menu.Item>
-                    <Dropdown overlay={menu}>
+                    {/* <Dropdown overlay={menu}>
                         <Menu.Item icon={<UserOutlined />}>
                             Account <DownOutlined />
                         </Menu.Item>
-                    </Dropdown>
+                    </Dropdown> */}
                 </Menu>
             )}
         </div>

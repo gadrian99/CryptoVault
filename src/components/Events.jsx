@@ -125,22 +125,15 @@ const Events = () => {
     
     return (
         <>
-            <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', width: '100%' }}>
-            
-                <Col xs={24} sm={24} xl={24}>
-                    <Title level={2}>
-                        Events
-                    </Title>
-                    {/* <Calendar /> */}
-                </Col>
+            <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', width: '100%', marginTop: '40px' }}>
 
-                <Col xs={24} sm={24} xl={24} style={{ marginTop: '50px' }}>
+                <Col xs={24} sm={24} xl={24}>
                     <Row style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center'}}>
                         <Title level={2} >
                                 Status Updates
                         </Title>
 
-                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', width: '25rem'}}>
+                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', width: '25rem', marginBottom: '10px'}}>
                             <div>
                                 <Text>Type: </Text>
                                 <Select defaultValue={projectType} style={{ width: 150 }} onChange={(e) => setProjectType(e)}>
@@ -166,8 +159,8 @@ const Events = () => {
                             </div>
                         </div>
                     </Row>
-                    {renderEvents()}
-                    <Pagination defaultCurrent={currentPage} total={statusUpdates.length} onChange={(e) => setCurrentPage(e)} />
+                    {renderEvents()}                
+                    <Pagination style={{ display: 'flex', justifyContent: 'center' }} defaultCurrent={currentPage} total={statusUpdates.length} onChange={(e) => setCurrentPage(e)} />
                    
                 </Col>
                 

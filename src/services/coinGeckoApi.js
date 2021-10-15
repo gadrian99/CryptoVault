@@ -24,6 +24,9 @@ export const coinGeckoApi = createApi({
         }),
         getGlobalDefiData: builder.query({
             query: () => createRequest(`/global/decentralized_finance_defi`)
+        }),
+        getCoinPrice: builder.query({
+            query: ({ id }) => createRequest(`simple/price?ids=${id}&vs_currencies=usd&include_market_cap=true&include_24hr_vol=true&include_24hr_change=true&include_last_updated_at=true'`)
         })
     })
 })  
@@ -33,5 +36,6 @@ export const {
     useGetTokenDataQuery,
     useGetTrendingCoinsQuery,
     useGetGlobalDataQuery,
-    useGetGlobalDefiDataQuery
+    useGetGlobalDefiDataQuery,
+    useGetCoinPriceQuery
 } = coinGeckoApi

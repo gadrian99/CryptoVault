@@ -1,7 +1,8 @@
 import React from 'react'
 import { Line } from 'react-chartjs-2'
 import { findRenderedComponentWithType } from 'react-dom/test-utils'
-import { Col, Row, Typography } from 'antd'
+import { Col, Row, Typography, Statistic } from 'antd'
+import { ArrowUpOutlined, ArrowDownOutlined } from '@ant-design/icons';
 
 const { Title } = Typography
 
@@ -21,8 +22,11 @@ const LineChart = ({ coinHistory, currentPrice, coinName, color }) => {
                 label: 'Price in USD',
                 data: coinPrice,
                 fill: false,
-                backgroundColor: color,
-                borderColor: '#1890FF'
+                backgroundColor: 'transparent',
+                borderColor: '#1890FF',
+                tension: 0.4,
+                borderCapStyle: 'round',
+                pointRadius: 0,
             }
         ]
     }
@@ -43,11 +47,11 @@ const LineChart = ({ coinHistory, currentPrice, coinName, color }) => {
         <>
             <Row className="chart-header">
                 <Title level={2} className="chart-title">{coinName} Price Chart</Title>
-                <Col className="price-container">
-                    <Title level={5} className="price-change">{coinHistory?.data?.change}%</Title>
-                    <Title level={5} className="current-price">Current {coinName} Price: $ {currentPrice}</Title>
-                </Col>
-                <Line  data={data} options={options} />
+                <Statistic title="Price Change" prefix={Math.sign(coinHistory?.data?.change) == -1 ? <ArrowDownOutlined /> : <ArrowUpOutlined /> } suffix="%" value={coinHistory?.data?.change} />
+                <Statistic title={`Current ${coinName} price`} prefix='$' value={currentPrice} />
+                <div className="line-chart">
+                    <Line  data={data} options={options} />
+                </div>
             </Row>
         </>
     )

@@ -26,12 +26,12 @@ const Cryptocurrencies = ({ simplified }) => {
         <>
             {!simplified && (
                 
-                    <div className="search-crypto">
-                        <Title level={2}>
-                            Top Coins by Market Cap
-                        </Title>
-                        <Input placeholder="Search Cryptocurrency" onChange={(e) => setSearchTerm(e.target.value)} style={{ width: '250px', height: '40px'}} />
-                    </div>
+                <div className="search-crypto">
+                    <Title level={2}>
+                        Top Coins by Market Cap
+                    </Title>
+                    <Input placeholder="Search Cryptocurrency" onChange={(e) => setSearchTerm(e.target.value)} style={{ width: '250px', height: '40px'}} />
+                </div>
             )}
 
             <Row gutter={[32,32]} className="crypto-card-container">

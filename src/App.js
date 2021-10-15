@@ -2,9 +2,12 @@ import React from 'react'
 import { Switch, Route, Link } from 'react-router-dom'
 import { Layout, Typography, Space } from 'antd'
 
-import { Navbar, Exchanges, Homepage, Cryptocurrencies, News, CryptoDetails, Dashboard, Events } from './components'
+import { Navbar, Exchanges, Homepage, Cryptocurrencies, News, CryptoDetails, Dashboard, Events, Transactions } from './components'
 import './App.css'
+import Menu from 'rc-menu/lib/Menu'
 
+const {  Header } = Layout
+const { SubMenu } = Menu
 
 const App = () => {
     return (
@@ -31,25 +34,26 @@ const App = () => {
                             <Route exact path="/news">
                                 <News />
                             </Route>
-                            <Route exact path="/account/dashboard">
+                            <Route exact path="/dashboard">
                                 <Dashboard />
                             </Route>
                             <Route exact path="/events">
                                 <Events />
                             </Route>
+                            <Route exact path="/dashboard/transactions">
+                                <Transactions />
+                            </Route>
                         </Switch>
                     </div>
                 </Layout>
                 <div className="footer">
-                    <Typography.Title level={5} style={{ color: 'white', textAlign: 'center'}}>
-                        CryptoVault <br />
-                        All Rights Reserved
+                    <Typography.Title level={5} style={{ display: 'flex', textAlign: 'center'}}>
+                        <p className="font-face-at">CRYPTO</p><p className="font-face-at orange">VAULT</p> <br />
                     </Typography.Title>
                     <Space>
                         <Link to="/">Home</Link>
                         <Link to="/exchanges">Exchanges</Link>
                         <Link to="/news">News</Link>
-                        <Link to="/account/dashboard">Dashboard</Link>
                     </Space>
                 </div>
             </div>
