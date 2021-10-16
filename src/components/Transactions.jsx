@@ -4,7 +4,8 @@ import {
     useGetTransactionsQuery,
     useGetNativeBalanceQuery,
     useGetTokenBalancesQuery,
-    useGetTokenTransactionsQuery
+    useGetTokenTransactionsQuery,
+    useGetNFTsQuery
 } from '../services/moralisApi'
 import moment from 'moment'
 
@@ -15,7 +16,7 @@ const Transactions = () => {
     const [chain, setChain] = useState('avalanche')
     const [loading, setLoading] = useState(false)
 
-    const { data, isFetching } = useGetTokenTransactionsQuery({ address, chain })
+    const { data, isFetching } = useGetNFTsQuery({ address, chain })
     const transactions = data
     console.log(transactions)
 
