@@ -1,16 +1,20 @@
 import React, { useState } from 'react'
 import { Typography, Table, Spin, Card } from 'antd'
-import { useGetTransactionsQuery, useGetNativeBalanceQuery } from '../services/moralisApi'
+import {
+    useGetTransactionsQuery,
+    useGetNativeBalanceQuery,
+    useGetTokenBalancesQuery
+} from '../services/moralisApi'
 import moment from 'moment'
 
 const { Title } = Typography
 
 const Transactions = () => {
     const [address, setAddress] = useState('0x5d6c606ca2C0b8a78b71A53470f780F19c3822d4')
-    const [chain, setChain] = useState('0x1')
+    const [chain, setChain] = useState('avalanche')
     const [loading, setLoading] = useState(false)
 
-    const { data, isFetching } = useGetNativeBalanceQuery({ address, chain })
+    const { data, isFetching } = useGetTokenBalancesQuery({ address, chain })
     const transactions = data
     console.log(transactions)
 
