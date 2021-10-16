@@ -20,6 +20,9 @@ export  const moralisApi = createApi({
         }),
         getTokenBalances: builder.query({
             query: ({ address, chain }) => createRequest(`/${address}/erc20?chain=${chain}`)
+        }),
+        getTokenTransactions: builder.query({
+            query: ({ address, chain }) => createRequest(`/${address}/erc20/transfers?chain=${chain}`)
         })
     })
 })
@@ -27,5 +30,6 @@ export  const moralisApi = createApi({
 export const {
     useGetTransactionsQuery,
     useGetNativeBalanceQuery,
-    useGetTokenBalancesQuery
+    useGetTokenBalancesQuery,
+    useGetTokenTransactionsQuery
 } = moralisApi

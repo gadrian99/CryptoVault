@@ -3,7 +3,8 @@ import { Typography, Table, Spin, Card } from 'antd'
 import {
     useGetTransactionsQuery,
     useGetNativeBalanceQuery,
-    useGetTokenBalancesQuery
+    useGetTokenBalancesQuery,
+    useGetTokenTransactionsQuery
 } from '../services/moralisApi'
 import moment from 'moment'
 
@@ -14,7 +15,7 @@ const Transactions = () => {
     const [chain, setChain] = useState('avalanche')
     const [loading, setLoading] = useState(false)
 
-    const { data, isFetching } = useGetTokenBalancesQuery({ address, chain })
+    const { data, isFetching } = useGetTokenTransactionsQuery({ address, chain })
     const transactions = data
     console.log(transactions)
 
