@@ -50,7 +50,7 @@ const Dominance = (coins) => {
     return (
         <>
             <Col xs={12} sm={12} lg={6} style={{ display: 'flex', flexDirection: 'row', justifyContent: 'center', alignItems: 'center', marginTop: '2rem' }}>
-                <Statistic title="BTC Market Dominance" value={dominance} prefix="~" suffix="%" precision={2}/>
+                <Statistic value={dominance} prefix="~" suffix="%" precision={2}/>
                 {/* <PolarArea data={data} height={100} width={100} /> */}
                 <Doughnut data={data} height={100} width={100} />
             </Col>

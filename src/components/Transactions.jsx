@@ -10,8 +10,8 @@ const Transactions = () => {
     const [chain, setChain] = useState('0x1')
     const [loading, setLoading] = useState(false)
 
-    const { data, isFetching } = useGetNativeBalanceQuery({ address, chain})
-    const transactions = data?.result
+    const { data, isFetching } = useGetNativeBalanceQuery({ address, chain })
+    const transactions = data
     console.log(transactions)
 
     const transactionColumns = [
@@ -56,26 +56,26 @@ const Transactions = () => {
     const generateTxData = () => {
         let data = []
 
-        if(!isFetching) {
-            transactions.map((tx) => {
-                data.push(
-                    {
-                        date: moment().format('MMMM Do YYYY', tx.block_timestamp),
-                        hash: tx.hash?.substring(0 , 6) + "..." + tx.hash?.substring(62),
-                        from: tx.from_address?.substring(0 , 6) + "..." + tx.from_address?.substring(38),
-                        to: tx.to_address?.substring(0 , 6) + "..." + tx.to_address?.substring(38),
-                        value: tx.value / 1e18,
-                        receipt_cumulative_gas_used: tx.receipt_cumulative_gas_used,
-                        nonce: tx.nonce
-                    }
-                )
-            })
-        }
+        // if(!isFetching) {
+        //     transactions.map((tx) => {
+        //         data.push(
+        //             {
+        //                 date: moment().format('MMMM Do YYYY', tx.block_timestamp),
+        //                 hash: tx.hash?.substring(0 , 6) + "..." + tx.hash?.substring(62),
+        //                 from: tx.from_address?.substring(0 , 6) + "..." + tx.from_address?.substring(38),
+        //                 to: tx.to_address?.substring(0 , 6) + "..." + tx.to_address?.substring(38),
+        //                 value: tx.value / 1e18,
+        //                 receipt_cumulative_gas_used: tx.receipt_cumulative_gas_used,
+        //                 nonce: tx.nonce
+        //             }
+        //         )
+        //     })
+        // }
         return data
     }
     const transactionData = generateTxData()
 
-    if(isFetching) return <Spin />
+    if(isFetching) return(<Spin />)
 
     return (
         <div>
