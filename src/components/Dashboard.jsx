@@ -10,7 +10,7 @@ const { TabPane } = Tabs
 
 const Dashboard = () => {
     const { Moralis, logout, isAuthenticated, authenticate, user } = useMoralis()
-   
+
     // Moralis.onDisconnect((data) => alert('disconnected from site' , data))
     // Moralis.onConnect((data) => alert('connected to site', data))
     // Setup state for network. Initialize to current established in wallet
@@ -22,7 +22,7 @@ const Dashboard = () => {
     const [walletBalance, setWalletBalance] = useState('')
     const [loading, setLoading] = useState(false)
     const [error, setError] = useState({})
-    
+
     const moralisNetworks = [
         {id: '0x1', name: 'Ethereum', gecko: 'ethereum'},
         {id: '0x3', name: 'Ropsten',},
@@ -195,13 +195,26 @@ const Dashboard = () => {
         )
     }
 
+
+    function greeting() {
+        let today = new Date()
+        let curHr = today.getHours()
+        if (curHr < 12) {
+            return <Title level={3}>Good morning {user.get("username")} </Title>
+        } else if (curHr < 18) {
+            return <Title level={3}>Good afternoon {user.get("username")} </Title>
+        } else {
+            return <Title level={3}>Good evening {user.get("username")} </Title>
+        }
+    }
+
     return(
         <div>
             {/* executes once user logs in */}
             {address == '' &&  setAddress(user.attributes.accounts[0])}
 
             <div style={{ display: 'flex', justifyContent: 'space-between', margin: '5px 0 30px 0', alignItems: 'center' }}>
-                <Title level={3}>Welcome {user.get("username")}</Title>
+                {greeting()}
                 <Button type="primary" onClick={() => {
                     logout()
                     //test once deployed
@@ -222,7 +235,7 @@ const Dashboard = () => {
 
 
             {/* {view && (
-                <>  
+                <>
                     <div style={{ display: 'flex', justifyContent: 'space-between', flexWrap: 'wrap', marginBottom: '50px' }}>
                         <Card title="💸 Wallet Balance" bordered={true} style={{ width: 300 }}>
                             {loading ? <Skeleton paragraph={{ rows: 0 }} /> : <Statistic value={walletBalance / 1e18} precision={10} />}
