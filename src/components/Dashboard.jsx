@@ -2,7 +2,7 @@ import React, { useState, useEffect }from 'react'
 import { Typography, Button, Table, Card, Statistic, Select, Skeleton, Tabs  } from 'antd'
 import { DownloadOutlined, LoginOutlined, LogoutOutlined } from '@ant-design/icons';
 import { useMoralis } from "react-moralis";
-import { Transactions, UserTokenList } from "../components/"
+import { Transactions, UserTokens, UserNFTs } from "../components/"
 const { Title, Text } = Typography
 const { Option } = Select
 const { Meta } = Card
@@ -16,7 +16,7 @@ const Dashboard = () => {
     // Setup state for network. Initialize to current established in wallet
     // Adjust wallet balance due to fiat currency selected
 
-    const [address, setAddress] = useState('')
+    const [address, setAddress] = useState('0xd1b3976cd24333c68dc6746f891fc698da1c0a4a')
     const [chain, setChain] = useState('0x1')
     const [totalGas, setTotalGas] = useState(0)
     const [walletBalance, setWalletBalance] = useState('')
@@ -183,6 +183,14 @@ const Dashboard = () => {
                 <Title level={2}>Account dashboard</Title>
                 <Text style={{ marginBottom: '60px' }}>Login with your wallet to access all your transactions and token history as well as more insight on your crypto wallet</Text>
                 <Button type="primary" onClick={() => authenticate({signingMessage:"Hello from CryptoVault :) Sign this request free of charge to authenticate."})}>Login with Metamask <LoginOutlined /></Button>
+                <Button type="primary" onClick={async () => {
+                    try {
+                        const user = await Moralis.Web3.authenticate({ provider: 'walletconnect' })
+                        const web3 = await Moralis.Web3.enable({ provider: 'walletconnect' })
+                    } catch (e) {
+                        alert(`Authentication Failed: ${e}`)
+                    }
+                }}>Login with WalletConnect <LoginOutlined /></Button>
             </div>
         )
     }
@@ -192,7 +200,7 @@ const Dashboard = () => {
             {/* executes once user logs in */}
             {address == '' &&  setAddress(user.attributes.accounts[0])}
 
-            <div style={{ display: 'flex', justifyContent: 'space-between', margin: '30px 0', alignItems: 'center'}}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', margin: '5px 0 30px 0', alignItems: 'center' }}>
                 <Title level={3}>Welcome {user.get("username")}</Title>
                 <Button type="primary" onClick={() => {
                     logout()
@@ -250,10 +258,10 @@ const Dashboard = () => {
                     <Transactions address={address} chain={chain} />
                 </TabPane>
                 <TabPane tab="Tokens" key="2">
-                    <UserTokenList address={address} chain={chain}/>
+                    <UserTokens address={address} chain={chain}/>
                 </TabPane>
                 <TabPane tab="NFTs" key="3">
-                    Content of Tab Pane 3
+                    <UserNFTs address={address} chain={chain}/>
                 </TabPane>
             </Tabs>
 

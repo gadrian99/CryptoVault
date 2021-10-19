@@ -1,21 +1,17 @@
-import React, { useState } from 'react'
-import { Typography, Table, Spin, Card, Button } from 'antd'
+import React from 'react'
+import moment from 'moment'
+import { Typography, Table } from 'antd'
 import {
     useGetTokenBalancesQuery,
     useGetTokenTransactionsQuery
 } from '../services/moralisApi'
-import { useMoralis } from "react-moralis";
-
-import moment from 'moment'
 
 const { Title } = Typography
 
-const UserTokenList = ({ address, chain }) => {
-    const [loading, setLoading] = useState(false)
+const UserTokens = ({ address, chain }) => {
     const { data: tokens, isFetching } = useGetTokenBalancesQuery({ address, chain })
     const { data: transactions } = useGetTokenTransactionsQuery({ address, chain })
-    const { Moralis } = useMoralis()
-    console.log(transactions)
+ 
     const tokenColumns = [
         {
             dataIndex: 'logo',
@@ -133,11 +129,11 @@ const UserTokenList = ({ address, chain }) => {
     return (
         <div>
             <Title level={4}>Tokens</Title>
-            <Table loading={loading} dataSource={tokenChartData} columns={tokenColumns} />
-            <Title level={4}>Token Transactions</Title>
-            <Table loading={loading} dataSource={tokenTxData} columns={tokenTxColumns} />
+            <Table loading={isFetching} dataSource={tokenChartData} columns={tokenColumns} />
+            <Title style={{ marginTop: '20px' }} level={4}>Token Transactions</Title>
+            <Table loading={isFetching} dataSource={tokenTxData} columns={tokenTxColumns} />
         </div>
     )
 }
 
-export default UserTokenList
+export default UserTokens

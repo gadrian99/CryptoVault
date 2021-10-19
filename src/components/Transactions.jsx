@@ -9,7 +9,6 @@ import moment from 'moment'
 const { Title } = Typography
 
 const Transactions = ({ address , chain }) => {
-    const [loading, setLoading] = useState(false)
     const { data: transactions, isFetching } = useGetTransactionsQuery({ address, chain })
 
     const transactionColumns = [
@@ -76,7 +75,7 @@ const Transactions = ({ address , chain }) => {
     return (
         <div>
             <Title level={4}>Transaction History</Title>
-            <Table loading={loading} dataSource={transactionData} columns={transactionColumns} />
+            <Table loading={isFetching} dataSource={transactionData} columns={transactionColumns} />
         </div>
     )
 }
