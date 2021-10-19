@@ -1,13 +1,12 @@
 import React, { useState, useEffect }from 'react'
-import millify from 'millify'
-import axios from 'axios'
-import { Typography, Button, Table, Card, Statistic, Select, Skeleton } from 'antd'
+import { Typography, Button, Table, Card, Statistic, Select, Skeleton, Tabs  } from 'antd'
 import { DownloadOutlined, LoginOutlined, LogoutOutlined } from '@ant-design/icons';
 import { useMoralis } from "react-moralis";
-
+import { Transactions, UserTokenList } from "../components/"
 const { Title, Text } = Typography
 const { Option } = Select
-const { Meta } = Card;
+const { Meta } = Card
+const { TabPane } = Tabs
 
 const Dashboard = () => {
     const { Moralis, logout, isAuthenticated, authenticate, user } = useMoralis()
@@ -380,7 +379,7 @@ const Dashboard = () => {
             </div>
 
 
-            {view && (
+            {/* {view && (
                 <>  
                     <div style={{ display: 'flex', justifyContent: 'space-between', flexWrap: 'wrap', marginBottom: '50px' }}>
                         <Card title="💸 Wallet Balance" bordered={true} style={{ width: 300 }}>
@@ -411,7 +410,19 @@ const Dashboard = () => {
                     <Title level={4}>NFTs List</Title>
                     <Table loading={loading} dataSource={nftData} columns={nftColumns} />
                 </>
-            )}
+            )} */}
+             <Tabs defaultActiveKey="1">
+                <TabPane tab="Transactions" key="1">
+                    <Transactions address={address} chain={chain} />
+                </TabPane>
+                <TabPane tab="Tokens" key="2">
+                    <UserTokenList />
+                </TabPane>
+                <TabPane tab="NFTs" key="3">
+                    Content of Tab Pane 3
+                </TabPane>
+            </Tabs>
+
         </div>
     )
 

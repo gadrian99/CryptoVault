@@ -34,14 +34,11 @@ const App = () => {
                             <Route exact path="/news">
                                 <News />
                             </Route>
-                            <Route exact path="/dashboard">
+                            <Route path="/dashboard">
                                 <Dashboard />
                             </Route>
                             <Route exact path="/events">
                                 <Events />
-                            </Route>
-                            <Route exact path="/dashboard/transactions">
-                                <Transactions />
                             </Route>
                         </Switch>
                     </div>

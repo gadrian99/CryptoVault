@@ -80,13 +80,13 @@ const Homepage = () => {
                 <Row className="dominance-container" gutter={[32,32]} style={{ display: 'flex', justifyContent: 'space-evenly', alignItems: 'center'}}>
                     <Dominance coins={allData} />
                     <iframe 
-                    src={`https://lunarcrush.com/widgets/galaxyscore?symbol=BTC&interval=1 Week&animation=true&theme=light`}
-                    id="galaxy-score" 
-                    frameBorder="0" 
-                    border="0" 
-                    cellspacing="0" 
-                    scrolling="no" 
-                    style={{ width: '50%', height: '400px', marginTop: '50px', borderRadius: '1rem', }}>
+                        src={`https://lunarcrush.com/widgets/galaxyscore?symbol=BTC&interval=1 Week&animation=true&theme=light`}
+                        id="galaxy-score" 
+                        frameBorder="0" 
+                        border="0" 
+                        cellspacing="0" 
+                        scrolling="no" 
+                        style={{ width: '50%', height: '400px', marginTop: '50px', borderRadius: '1rem', }}>
                     </iframe>
                     <Text italic><InfoCircleOutlined /> The Galaxy Score™ indicates how healthy a coin is by looking at combined performance indicators across markets and social engagement. Display the real-time Galaxy Score™ of any coin.</Text>
                 </Row>
