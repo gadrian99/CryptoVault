@@ -209,7 +209,7 @@ const Dashboard = () => {
     }
 
     return(
-        <div>
+        <div style={{ minHeight: '80vh' }}>
             {/* executes once user logs in */}
             {address == '' &&  setAddress(user.attributes.accounts[0])}
 

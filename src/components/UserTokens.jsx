@@ -11,7 +11,7 @@ const { Title } = Typography
 const UserTokens = ({ address, chain }) => {
     const { data: tokens, isFetching } = useGetTokenBalancesQuery({ address, chain })
     const { data: transactions } = useGetTokenTransactionsQuery({ address, chain })
- 
+
     const tokenColumns = [
         {
             dataIndex: 'logo',
@@ -41,14 +41,14 @@ const UserTokens = ({ address, chain }) => {
 
     const generateTokenData = () => {
         let data = []
-        
+
         const exchange = (x) => {
             switch(x) {
                 case '0x1':
                     return 'uniswap-v3' // ethereum dex
                 case '0x38':
                     return 'pancakeswap-v2' // binance dex
-                case '0x89': 
+                case '0x89':
                     return 'quickswap' // polygon dex
             }
         }
@@ -74,7 +74,7 @@ const UserTokens = ({ address, chain }) => {
                 }
             )
         })
-        
+
         return data
     }
     const tokenChartData = generateTokenData()
@@ -114,11 +114,11 @@ const UserTokens = ({ address, chain }) => {
         transactions?.result?.map((tx) => {
             data.push(
                 {
-                    date: moment().format('MMMM Do YYYY', tx.block_timestamp),
+                    date: moment().format('MMM Do YYYY', tx.block_timestamp),
                     hash: tx.block_hash?.substring(0 , 6) + "..." + tx.block_hash?.substring(62),
                     from: tx.from_address?.substring(0 , 6) + "..." + tx.from_address?.substring(38),
                     to: tx.to_address?.substring(0 , 6) + "..." + tx.to_address?.substring(38),
-                    value: tx.value
+                    value: Math.floor((tx.value / 1e18) * 100) / 100
                 }
             )
         })

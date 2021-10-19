@@ -3,7 +3,7 @@ import HTMLReactParser from 'html-react-parser';
 import moment from 'moment'
 import { Typography, Table, Result } from 'antd'
 import {
-    useGetNFTsQuery, 
+    useGetNFTsQuery,
     useGetNFTsTransferQuery
 } from '../services/moralisApi'
 
@@ -62,7 +62,7 @@ const UserNFTs = ({ address , chain }) => {
                     block_number_minted: nft?.block_number_minted,
                     name: nft?.name,
                     owner_of: nft?.owner_of.substring(0 , 6) + "..." + nft?.owner_of.substring(38),
-                    synced_at: nft?.synced_at,
+                    synced_at: moment().format('MMM Do YYYY', nft?.synced_at),
                     token_address:nft?.token_address.substring(0 , 6) + "..." + nft?.token_address.substring(38),
                 }
             )
@@ -71,12 +71,8 @@ const UserNFTs = ({ address , chain }) => {
     }
     const nftData = generatenftData()
 
-
-    
-
     return (
         <div>
-            {NFTs?.result?.map((nft) => HTMLReactParser(nft.metadata) )}
             <Title level={4}>NFTs List</Title>
             <Table loading={isFetching} dataSource={nftData} columns={nftColumns} />
         </div>

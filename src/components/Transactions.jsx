@@ -56,7 +56,7 @@ const Transactions = ({ address , chain }) => {
         transactions?.result?.map((tx) => {
             data.push(
                 {
-                    date: moment().format('MMMM Do YYYY', tx.block_timestamp),
+                    date: moment().format('MMM Do YYYY', tx.block_timestamp),
                     hash: tx.hash?.substring(0 , 6) + "..." + tx.hash?.substring(62),
                     from: tx.from_address?.substring(0 , 6) + "..." + tx.from_address?.substring(38),
                     to: tx.to_address?.substring(0 , 6) + "..." + tx.to_address?.substring(38),
@@ -66,7 +66,7 @@ const Transactions = ({ address , chain }) => {
                 }
             )
         })
-    
+
         return data
     }
 
