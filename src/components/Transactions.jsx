@@ -1,10 +1,11 @@
-import React, { useState } from 'react'
+import React from 'react'
+import millify from 'millify'
+import moment from 'moment'
+
 import { Typography, Table, Spin, Card, Button } from 'antd'
 import {
     useGetTransactionsQuery
 } from '../services/moralisApi'
-
-import moment from 'moment'
 
 const { Title } = Typography
 
@@ -61,7 +62,7 @@ const Transactions = ({ address , chain }) => {
                     from: tx.from_address?.substring(0 , 6) + "..." + tx.from_address?.substring(38),
                     to: tx.to_address?.substring(0 , 6) + "..." + tx.to_address?.substring(38),
                     value: tx.value / 1e18,
-                    receipt_cumulative_gas_used: tx.receipt_cumulative_gas_used,
+                    receipt_cumulative_gas_used: millify(tx.receipt_cumulative_gas_used),
                     nonce: tx.nonce
                 }
             )

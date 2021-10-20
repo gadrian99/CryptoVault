@@ -5,6 +5,7 @@ import {
     useGetTokenBalancesQuery,
     useGetTokenTransactionsQuery
 } from '../services/moralisApi'
+import millify from 'millify'
 
 const { Title } = Typography
 
@@ -69,7 +70,7 @@ const UserTokens = ({ address, chain }) => {
                     symbol: token.symbol,
                     name: token.name,
                     address: token.token_address?.substring(0 , 6) + "..." + token.token_address?.substring(38),
-                    amount: token.balance / Math.pow(10, token.decimals),
+                    amount: millify(token.balance / Math.pow(10, token.decimals))
                     // balance: parseFloat(x.toFixed(2))
                 }
             )
