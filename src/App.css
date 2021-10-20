@@ -154,9 +154,7 @@ a:hover{
   .routes {
     padding: 1rem 1rem;
   }
-  .line-chart {
-    height: 20rem !important;
-  }
+  
 }
 
 .coin-detail-container{

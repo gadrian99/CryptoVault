@@ -2,7 +2,7 @@ import React from 'react'
 import millify from 'millify'
 import moment from 'moment'
 
-import { Typography, Table, Spin, Card, Button } from 'antd'
+import { Typography, Table } from 'antd'
 import {
     useGetTransactionsQuery
 } from '../services/moralisApi'

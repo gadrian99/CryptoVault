@@ -1,9 +1,7 @@
 import React, { useState } from 'react'
-import { Typography, Statistic, Row, Col } from 'antd'
+import { Statistic, Row, Col } from 'antd'
 
-import { PolarArea, Doughnut, Pie } from 'react-chartjs-2'
-import { ArrowUpOutlined, ArrowDownOutlined } from '@ant-design/icons';
-const { Title } = Typography
+import { Doughnut } from 'react-chartjs-2'
 
 const Dominance = (coins) => {
     const [dominance, setDominance] = useState(0)
@@ -53,7 +51,7 @@ const Dominance = (coins) => {
                 <Col xs={12} sm={12} lg={6}>
                     <Statistic title="BTC Dominance" value={dominance} suffix="%" precision={2}/>
                 </Col>
-                <div style={{ minWidth: '300px' }}>
+                <div style={{ minWidth: '400px' }}>
                     <Doughnut data={data} height={100} width={100} />
                 </div>
             </Row>

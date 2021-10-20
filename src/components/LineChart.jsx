@@ -1,7 +1,6 @@
 import React from 'react'
 import { Line } from 'react-chartjs-2'
-import { findRenderedComponentWithType } from 'react-dom/test-utils'
-import { Col, Row, Typography, Statistic } from 'antd'
+import { Row, Typography, Statistic } from 'antd'
 import { ArrowUpOutlined, ArrowDownOutlined } from '@ant-design/icons';
 
 const { Title } = Typography
@@ -46,12 +45,11 @@ const LineChart = ({ coinHistory, currentPrice, coinName, color }) => {
     return (
         <>
             <Row className="chart-header">
-                <Title level={2} className="chart-title">{coinName} Price Chart</Title>
+                <Title level={2} className="chart-title">Price Chart</Title>
                 <Statistic title="Price Change" prefix={Math.sign(coinHistory?.data?.change) == -1 ? <ArrowDownOutlined /> : <ArrowUpOutlined /> } suffix="%" value={coinHistory?.data?.change} />
                 <Statistic title={`Current ${coinName} price`} prefix='$' value={currentPrice} />
-                <div className="line-chart">
-                    <Line  data={data} options={options} />
-                </div>
+                <Line data={data} options={options} />
+
             </Row>
         </>
     )

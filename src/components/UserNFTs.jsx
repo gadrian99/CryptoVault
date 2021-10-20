@@ -1,17 +1,14 @@
 import React from 'react'
-import HTMLReactParser from 'html-react-parser';
 import moment from 'moment'
-import { Typography, Table, Result } from 'antd'
+import { Typography, Table } from 'antd'
 import {
-    useGetNFTsQuery,
-    useGetNFTsTransferQuery
+    useGetNFTsQuery
 } from '../services/moralisApi'
 
-const { Title, Text } = Typography
+const { Title } = Typography
 
 const UserNFTs = ({ address , chain }) => {
     const { data: NFTs, isFetching } = useGetNFTsQuery({ address, chain })
-    console.log(NFTs)
 
     const nftColumns = [
         {

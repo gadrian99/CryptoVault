@@ -1,11 +1,9 @@
 import React, { useState } from 'react'
-import { Calendar, Badge, Typography, Skeleton, Row, Col, Card, Select, Button, Pagination } from 'antd';
-import { DownloadOutlined } from '@ant-design/icons';
+import { Badge, Typography, Skeleton, Row, Col, Card, Select,Pagination } from 'antd';
 
 import { useGetStatusUpdateQuery } from "../services/coinGeckoApi"
-import Loader from './Loader'
 import moment from 'moment'
-const { Title, Text, Paragraph } = Typography
+const { Title, Text } = Typography
 const { Meta } = Card
 const { Option } = Select
 
@@ -14,9 +12,6 @@ const Events = () => {
     const [currentCategory, setCurrentCategory] = useState('')
     const [currentPage, setCurrentPage] = useState(1)
     const [perPage, setPerPage] = useState(10)
-    const [date, setDate] = useState('')
-    const [secondaryDate, setSecondaryDate] = useState('')
-    const [currentUpdates, setCurrentUpdates] = useState('')
     
     const { data, isFetching } = useGetStatusUpdateQuery({ projectType, currentCategory })
 
@@ -40,34 +35,6 @@ const Events = () => {
     function capitalize(string) {
         return string.charAt(0).toUpperCase() + string.slice(1);
     }
-
-    const getListData = (list) => {
-        let listData = []
-        list?.status_updates.forEach(x => {
-            listData.push({
-                category: x.category,
-                created_at: x.created_at,
-                description: x.description
-            })
-        })
-        
-        return listData || []
-    }
-
-    function dateCellRender() {
-        const listData = getListData(data)
-
-        return(
-            <ul className="events">
-                {listData.map(item => (
-                    <li key={item.content}>
-                        <Badge status={item.type} text={item.content} />
-                    </li>
-                ))}
-            </ul>
-        )
-    }
-    function monthCellRender() {}
 
     function renderEvents() {
 

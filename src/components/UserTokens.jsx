@@ -51,6 +51,8 @@ const UserTokens = ({ address, chain }) => {
                     return 'pancakeswap-v2' // binance dex
                 case '0x89':
                     return 'quickswap' // polygon dex
+                default:
+                    break
             }
         }
 

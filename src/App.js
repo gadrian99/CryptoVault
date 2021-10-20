@@ -2,12 +2,8 @@ import React from 'react'
 import { Switch, Route, Link } from 'react-router-dom'
 import { Layout, Typography, Space } from 'antd'
 
-import { Navbar, Exchanges, Homepage, Cryptocurrencies, News, CryptoDetails, Dashboard, Events, Transactions } from './components'
+import { Navbar, Exchanges, Homepage, Cryptocurrencies, News, CryptoDetails, Dashboard, Events } from './components'
 import './App.css'
-import Menu from 'rc-menu/lib/Menu'
-
-const {  Header } = Layout
-const { SubMenu } = Menu
 
 const App = () => {
     return (
@@ -51,6 +47,7 @@ const App = () => {
                         <Link to="/">Home</Link>
                         <Link to="/exchanges">Exchanges</Link>
                         <Link to="/news">News</Link>
+                        <Link to="/dashboard">Dashboard</Link>
                     </Space>
                 </div>
             </div>

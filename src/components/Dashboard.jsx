@@ -1,9 +1,12 @@
-import React, { useState, useEffect }from 'react'
-import { Typography, Button, Table, Card, Statistic, Select, Skeleton, Tabs  } from 'antd'
-import { DownloadOutlined, LoginOutlined, LogoutOutlined } from '@ant-design/icons';
-import { useMoralis } from "react-moralis";
+import React, { useState }from 'react'
+import { Typography, Button, Card, Select, Tabs  } from 'antd'
+import { LogoutOutlined } from '@ant-design/icons'
+import { useMoralis } from "react-moralis"
 import { Transactions, UserTokens, UserNFTs } from "../components/"
-const { Title, Text, Paragraph } = Typography
+import loginImage from '../images/loginImage.png'
+import metamask from '../images/metamask.png'
+import walletconnect from '../images/walletconnect.png'
+const { Title, Text } = Typography
 const { Option } = Select
 const { Meta } = Card
 const { TabPane } = Tabs
@@ -19,9 +22,8 @@ const Dashboard = () => {
     const [chain, setChain] = useState('0x1')
     const [totalGas, setTotalGas] = useState(0)
     const [walletBalance, setWalletBalance] = useState('')
-    const [loading, setLoading] = useState(false)
     const [error, setError] = useState({})
-    const [updatedUsername, setUpdatedUsername] = useState('')
+
     const moralisNetworks = [
         {id: '0x1', name: 'Ethereum', gecko: 'ethereum'},
         {id: '0x3', name: 'Ropsten',},
@@ -36,8 +38,6 @@ const Dashboard = () => {
     ]
 
     const fetchData = async () => {
-        setLoading(true)
-        setTimeout(() => setLoading(false), 3000)
         const gasTotal = async (txs) => {
             setTotalGas(0)
             let x = 0
@@ -76,20 +76,22 @@ const Dashboard = () => {
      // Monitor Network Change
      Moralis.onChainChanged((chain) => setChain(chain))
 
+
+    // Login Screen
     if (!isAuthenticated) {
         return (
             <div style={{ display: 'flex', justifyContent: 'center',  alignItems: 'center', marginBottom: '50px', height: '80vh', flexDirection: 'column' }}>
-                <Title level={2}>Account dashboard</Title>
+                <Title level={2}>Take control of your crypto</Title>
+                <img src={loginImage} style={{ height: '15rem', marginBottom: '2rem'}} />
                 <Text style={{ marginBottom: '60px' }}>Login with your wallet to access all your transactions and token history as well as more insight on your crypto wallet</Text>
-                <Button type="primary" onClick={() => authenticate({signingMessage:"Hello from CryptoVault :) Sign this request free of charge to authenticate."})}>Login with Metamask <LoginOutlined /></Button>
-                <Button type="primary" onClick={async () => {
+                <Button style={{ marginBottom: '15px', width: '15rem'}} type="primary" onClick={() => authenticate({signingMessage:"Hello from CryptoVault :) Sign this request free of charge to authenticate."})}>Login with Metamask <img src={metamask} style={{ marginLeft: '0.5rem', height: '1.5rem'}}/></Button>
+                <Button style={{ width: '15rem'}} onClick={async () => {
                     try {
-                        await Moralis.Web3.authenticate({ provider: 'walletconnect' })
-                        await Moralis.Web3.enable({ provider: 'walletconnect' })
+                        authenticate({ provider: 'walletconnect' })
                     } catch (e) {
                         alert(`Authentication Failed: ${e}`)
                     }
-                }}>Login with WalletConnect <LoginOutlined /></Button>
+                }}>Login with WalletConnect <img src={walletconnect} style={{ marginLeft: '0.5rem', height: '1rem'}}/></Button>
             </div>
         )
     }
@@ -135,39 +137,24 @@ const Dashboard = () => {
                 </Select></Text>
             </div>
 
-
-            {/* {view && (
-                <>
-                    <div style={{ display: 'flex', justifyContent: 'space-between', flexWrap: 'wrap', marginBottom: '50px' }}>
-                        <Card title="💸 Wallet Balance" bordered={true} style={{ width: 300 }}>
-                            {loading ? <Skeleton paragraph={{ rows: 0 }} /> : <Statistic value={walletBalance / 1e18} precision={10} />}
-                        </Card>
-                        <Card title="🏷️ Total Transactions" bordered={true} style={{ width: 300 }}>
-                            {loading ? <Skeleton paragraph={{ rows: 0 }} /> : <Statistic value={txs.length}/>}
-                        </Card>
-                        <Card title="🔥 Total Gas Burned" bordered={true} style={{ width: 300 }}>
-                            {loading ? <Skeleton paragraph={{ rows: 0 }} /> : <Statistic value={millify(totalGas)} precision={0}/>}
-                        </Card>
-                        <Card title="💠 Total Tokens" bordered={true} style={{ width: 300 }}>
-                            {loading ? <Skeleton paragraph={{ rows: 0 }} /> : <Statistic value={tokens.length} precision={0}/>}
-                        </Card>
-                        <Card title="⚜️ Total NFTs" bordered={true} style={{ width: 300 }}>
-                            {loading ? <Skeleton paragraph={{ rows: 0 }} /> : <Statistic value={nfts.length} precision={0}/>}
-                        </Card>
-                    </div>
-                    <Title level={4}>Transaction History</Title>
-                    <Table loading={loading} dataSource={transactionData} columns={transactionColumns} />
-
-                    <Title level={4}>Tokens</Title>
-                    <Table loading={loading} dataSource={tokenChartData} columns={tokenColumns} />
-
-                    <Title level={4}>Token Transactions</Title>
-                    <Table loading={loading} dataSource={tokenTxData} columns={tokenTxColumns} />
-
-                    <Title level={4}>NFTs List</Title>
-                    <Table loading={loading} dataSource={nftData} columns={nftColumns} />
-                </>
-            )} */}
+            {/* <div style={{ display: 'flex', justifyContent: 'space-between', flexWrap: 'wrap', marginBottom: '50px' }}>
+                <Card title="💸 Wallet Balance" bordered={true} style={{ width: 300 }}>
+                    {loading ? <Skeleton paragraph={{ rows: 0 }} /> : <Statistic value={walletBalance / 1e18} precision={10} />}
+                </Card>
+                <Card title="🏷️ Total Transactions" bordered={true} style={{ width: 300 }}>
+                    {loading ? <Skeleton paragraph={{ rows: 0 }} /> : <Statistic value={txs.length}/>}
+                </Card>
+                <Card title="🔥 Total Gas Burned" bordered={true} style={{ width: 300 }}>
+                    {loading ? <Skeleton paragraph={{ rows: 0 }} /> : <Statistic value={millify(totalGas)} precision={0}/>}
+                </Card>
+                <Card title="💠 Total Tokens" bordered={true} style={{ width: 300 }}>
+                    {loading ? <Skeleton paragraph={{ rows: 0 }} /> : <Statistic value={tokens.length} precision={0}/>}
+                </Card>
+                <Card title="⚜️ Total NFTs" bordered={true} style={{ width: 300 }}>
+                    {loading ? <Skeleton paragraph={{ rows: 0 }} /> : <Statistic value={nfts.length} precision={0}/>}
+                </Card>
+            </div> */}
+            
              <Tabs defaultActiveKey="1">
                 <TabPane tab="Transactions" key="1">
                     <Transactions address={address} chain={chain} />

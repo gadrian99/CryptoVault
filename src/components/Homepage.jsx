@@ -76,7 +76,7 @@ const Homepage = () => {
                 </Row>
             </Card>
 
-            <Card style={{ marginBottom: '30px', borderRadius: '1rem'}} hoverable>
+            <Card title={<h1>BTC Dominance</h1>} style={{ marginBottom: '30px', borderRadius: '1rem', padding: '1rem'}} hoverable>
                 <Row className="dominance-container" gutter={[32,32]} style={{ display: 'flex', justifyContent: 'space-evenly', alignItems: 'center'}}>
                     <Dominance coins={allData} />
                     <iframe 
@@ -92,7 +92,7 @@ const Homepage = () => {
                 </Row>
             </Card>
 
-            {/* <Card style={{ marginBottom: '30px', borderRadius: '1rem'}} title={<h1>Global Defi Stats</h1>} hoverable>
+            <Card style={{ marginBottom: '30px', borderRadius: '1rem'}} title={<h1>Global Defi Stats</h1>} hoverable>
                 <Row gutter={[32,32]} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', width: '100%'}}>
                     <Col>
                         <Statistic title="DeFi Dominance" value={globalDefiData?.defi_dominance} prefix="~" suffix="%" precision={2}/>
@@ -110,7 +110,7 @@ const Homepage = () => {
                         <Statistic title="DeFi / ETH Ratio" value={globalDefiData?.defi_to_eth_ratio} suffix="%" precision={2} />
                     </Col>
                 </Row>
-            </Card> */}
+            </Card>
 
             <div className="home-heading-container">
                 <Title level={2} className="home-title">Top 10 Coins</Title>
