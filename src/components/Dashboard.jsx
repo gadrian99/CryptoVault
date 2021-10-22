@@ -14,10 +14,9 @@ const { TabPane } = Tabs
 const Dashboard = () => {
     const { Moralis, logout, isAuthenticated, authenticate, user, setUserData } = useMoralis()
 
+
     // Moralis.onDisconnect((data) => alert('disconnected from site' , data))
     // Moralis.onConnect((data) => alert('connected to site', data))
-    // Setup state for network. Initialize to current established in wallet
-    // Adjust wallet balance due to fiat currency selected
     const [address, setAddress] = useState('')
     const [chain, setChain] = useState('0x1')
     const [totalGas, setTotalGas] = useState(0)
@@ -81,13 +80,14 @@ const Dashboard = () => {
     if (!isAuthenticated) {
         return (
             <div style={{ display: 'flex', justifyContent: 'center',  alignItems: 'center', marginBottom: '50px', height: '80vh', flexDirection: 'column' }}>
-                <Title level={2}>Take control of your crypto</Title>
+                <Title style={{ alignText: 'center' }} level={2}>Take control of your crypto</Title>
                 <img src={loginImage} style={{ height: '15rem', marginBottom: '2rem'}} />
                 <Text style={{ marginBottom: '60px' }}>Login with your wallet to access all your transactions and token history as well as more insight on your crypto wallet</Text>
                 <Button style={{ marginBottom: '15px', width: '15rem'}} type="primary" onClick={() => authenticate({signingMessage:"Hello from CryptoVault :) Sign this request free of charge to authenticate."})}>Login with Metamask <img src={metamask} style={{ marginLeft: '0.5rem', height: '1.5rem'}}/></Button>
                 <Button style={{ width: '15rem'}} onClick={async () => {
                     try {
-                        authenticate({ provider: 'walletconnect' })
+                        authenticate({ provider: 'walletconnect', signingMessage:"Hello from CryptoVault :) Sign this request free of charge to authenticate." })
+
                     } catch (e) {
                         alert(`Authentication Failed: ${e}`)
                     }

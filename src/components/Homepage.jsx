@@ -86,13 +86,13 @@ const Homepage = () => {
                         border="0" 
                         cellspacing="0" 
                         scrolling="no" 
-                        style={{ width: '50%', height: '400px', marginTop: '50px', borderRadius: '1rem', }}>
+                        style={{ width: '500px', height: '400px', marginTop: '50px', borderRadius: '1rem', }}>
                     </iframe>
                     <Text italic><InfoCircleOutlined /> The Galaxy Score™ indicates how healthy a coin is by looking at combined performance indicators across markets and social engagement. Display the real-time Galaxy Score™ of any coin.</Text>
                 </Row>
             </Card>
 
-            <Card style={{ marginBottom: '30px', borderRadius: '1rem'}} title={<h1>Global Defi Stats</h1>} hoverable>
+            {/* <Card style={{ marginBottom: '30px', borderRadius: '1rem'}} title={<h1>Global Defi Stats</h1>} hoverable>
                 <Row gutter={[32,32]} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', width: '100%'}}>
                     <Col>
                         <Statistic title="DeFi Dominance" value={globalDefiData?.defi_dominance} prefix="~" suffix="%" precision={2}/>
@@ -110,7 +110,7 @@ const Homepage = () => {
                         <Statistic title="DeFi / ETH Ratio" value={globalDefiData?.defi_to_eth_ratio} suffix="%" precision={2} />
                     </Col>
                 </Row>
-            </Card>
+            </Card> */}
 
             <div className="home-heading-container">
                 <Title level={2} className="home-title">Top 10 Coins</Title>

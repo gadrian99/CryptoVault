@@ -106,7 +106,7 @@ a:hover{
 }
 
 /* 983px */
-@media screen and (max-width:1000px){
+@media screen and (max-width:1060px){
   .app{
       flex-direction: column;
       overflow: hidden;

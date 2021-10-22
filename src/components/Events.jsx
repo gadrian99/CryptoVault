@@ -61,8 +61,8 @@ const Events = () => {
         return current?.map((x) => ((
             <>  
                 <Badge.Ribbon
-                        text={capitalize(x.category)}
-                        color={colorGenerator(x.category)}
+                    text={capitalize(x.category)}
+                    color={colorGenerator(x.category)}
                 >
                     <Card hoverable size="small" style={{ marginBottom: '10px', padding: '1rem', borderRadius: '1rem' }}>
                         <Meta 
