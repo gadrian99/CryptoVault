@@ -15,7 +15,7 @@ const Transactions = ({ address , chain }) => {
     const [mobileView, setMobileView] = useState(true)
     const [tabletView, setTabletView] = useState(false)
     const [screenSize, setScreenSize] = useState(null)
-    console.log(transactions)
+
     useEffect(() => {
         const handleResize = () => setScreenSize(window.innerWidth)
         window.addEventListener('resize', handleResize)
@@ -73,12 +73,7 @@ const Transactions = ({ address , chain }) => {
             title: 'Gas used',
             dataIndex: 'receipt_cumulative_gas_used',
             key: 'receipt_cumulative_gas_used'
-        },
-        {
-            title: 'Nonce',
-            dataIndex: 'nonce',
-            key: 'nonce'
-        },
+        }
     ]
     
     const mobileColumns = [
@@ -148,12 +143,11 @@ const Transactions = ({ address , chain }) => {
                 {   
                     type: renderTypeOf(tx.from_address),
                     date: moment().format('MMM/D/YY', tx.block_timestamp),
-                    hash: tx.hash?.substring(0 , 6) + "..." + tx.hash?.substring(62),
-                    from: tx.from_address?.substring(0 , 6) + "..." + tx.from_address?.substring(38),
-                    to: tx.to_address?.substring(0 , 6) + "..." + tx.to_address?.substring(38),
+                    hash: <a target="_blank" rel="noopener noreferrer" href={`https://etherscan.io/tx/${tx.hash}`}>{tx.hash?.substring(0 , 6) + "..." + tx.hash?.substring(62)}</a>,
+                    from: <a target="_blank" rel="noopener noreferrer" href={`https://etherscan.io/address/${tx.from_address}`}>{tx.from_address?.substring(0 , 6) + "..." + tx.from_address?.substring(38)}</a>,
+                    to: <a target="_blank" rel="noopener noreferrer" href={`https://etherscan.io/address/${tx.to_address}`}>{tx.to_address?.substring(0 , 6) + "..." + tx.to_address?.substring(38)}</a>,
                     value: tx.value / 1e18,
-                    receipt_cumulative_gas_used: millify(tx.receipt_cumulative_gas_used),
-                    nonce: tx.nonce
+                    receipt_cumulative_gas_used: millify(tx.receipt_cumulative_gas_used)
                 }
             )
         })
