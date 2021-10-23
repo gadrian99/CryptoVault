@@ -1,5 +1,5 @@
 import React, { useState }from 'react'
-import { Typography, Button, Card, Select, Tabs  } from 'antd'
+import { Typography, Button, Card, Select, Tabs, message  } from 'antd'
 import { LogoutOutlined } from '@ant-design/icons'
 import { useMoralis } from "react-moralis"
 import { Transactions, UserTokens, UserNFTs } from "../components/"
@@ -83,14 +83,21 @@ const Dashboard = () => {
                 <Title style={{ alignText: 'center' }} level={2}>Take control of your crypto</Title>
                 <img src={loginImage} style={{ height: '15rem', marginBottom: '2rem'}} />
                 <Text style={{ marginBottom: '60px' }}>Login with your wallet to access all your transactions and token history as well as more insight on your crypto wallet</Text>
-                <Button style={{ marginBottom: '15px', width: '15rem'}} type="primary" onClick={() => authenticate({signingMessage:"Hello from CryptoVault :) Sign this request free of charge to authenticate."})}>Login with Metamask <img src={metamask} style={{ marginLeft: '0.5rem', height: '1.5rem'}}/></Button>
-                <Button style={{ width: '15rem'}} onClick={async () => {
-                    try {
-                        authenticate({ provider: 'walletconnect', signingMessage:"Hello from CryptoVault :) Sign this request free of charge to authenticate." })
-
-                    } catch (e) {
-                        alert(`Authentication Failed: ${e}`)
-                    }
+                <Button style={{ marginBottom: '15px', width: '15rem'}} type="primary" onClick={() => {
+                    authenticate({
+                        signingMessage:"Hello from CryptoVault :) Sign this request free of charge to authenticate.",
+                        onSuccess: () => message.success('Logged In Successfully'),
+                        onError: (e) => message.error(e.message)
+                    })
+                
+                }}>Login with Metamask <img src={metamask} style={{ marginLeft: '0.5rem', height: '1.5rem'}}/></Button>
+                <Button style={{ width: '15rem'}} onClick={() => {
+                    authenticate({
+                        provider: 'walletconnect',
+                        signingMessage:"Hello from CryptoVault :) Sign this request free of charge to authenticate.",
+                        onSuccess: () => message.success('Logged In Successfully'),
+                        onError: (e) => message.error(e.message)
+                    })
                 }}>Login with WalletConnect <img src={walletconnect} style={{ marginLeft: '0.5rem', height: '1rem'}}/></Button>
             </div>
         )
