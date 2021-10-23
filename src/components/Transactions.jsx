@@ -142,7 +142,7 @@ const Transactions = ({ address , chain }) => {
             data.push(
                 {   
                     type: renderTypeOf(tx.from_address),
-                    date: moment().format('MMM/D/YY', tx.block_timestamp),
+                    date: moment().format('MMM-D-YYYY', tx.block_timestamp),
                     hash: <a target="_blank" rel="noopener noreferrer" href={`https://etherscan.io/tx/${tx.hash}`}>{tx.hash?.substring(0 , 6) + "..." + tx.hash?.substring(62)}</a>,
                     from: <a target="_blank" rel="noopener noreferrer" href={`https://etherscan.io/address/${tx.from_address}`}>{tx.from_address?.substring(0 , 6) + "..." + tx.from_address?.substring(38)}</a>,
                     to: <a target="_blank" rel="noopener noreferrer" href={`https://etherscan.io/address/${tx.to_address}`}>{tx.to_address?.substring(0 , 6) + "..." + tx.to_address?.substring(38)}</a>,

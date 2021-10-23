@@ -6,7 +6,8 @@ import {
     useGetNFTsQuery
 } from '../services/moralisApi'
 import millify from 'millify'
-import { Typography, Button, Card, Select, Tabs, Skeleton, Statistic, message  } from 'antd'
+import CountUp from "react-countup"
+import { Typography, Button, Card, Select, Tabs, Statistic, message  } from 'antd'
 import { LogoutOutlined } from '@ant-design/icons'
 import { useMoralis } from "react-moralis"
 import { Transactions, UserTokens, UserNFTs } from "../components/"
@@ -125,23 +126,26 @@ const Dashboard = () => {
 
             <div style={{ display: 'flex', justifyContent: 'space-between', margin: '5px 0 30px 0', alignItems: 'center' }}>
                 {greeting()}
-                <Button disabled={isAuthenticating} type="primary" onClick={() => {
-                    logout()
-                    message.success('Logged Out Successfully')
-                }} danger>Logout <LogoutOutlined /></Button>
-            </div>
-
-            <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '30px', width: '30rem' }}>
-                <Text>Current address: <Select defaultValue={address} style={{ width: 150 }} onChange={(data) => setAddress(data)}>
-                    <Option value={address}>{address.substring(0,6) + "..." + address.substring(38)}</Option>
-                </Select></Text>
-
+                <div>
                 <Text>Current chain: <Select defaultValue={chain} style={{ width: 120 }} onChange={(data) => setChain(data)}>
                     {moralisNetworks.map(({id, name}) => (
                         <Option value={id}>{name}</Option>
                     ))}
                 </Select></Text>
+                <Button style={{ marginLeft: '1rem' }} disabled={isAuthenticating} type="primary" onClick={() => {
+                    logout()
+                    message.success('Logged Out Successfully')
+                }} danger>Logout <LogoutOutlined /></Button>
+                </div>
             </div>
+
+            {/* <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-between', marginBottom: '30px', width: '30rem' }}>
+                <Text>Current address: <Select defaultValue={address} style={{ width: 150, marginBottom: '1rem' }} onChange={(data) => setAddress(data)}>
+                    <Option value={address}>{address.substring(0,6) + "..." + address.substring(38)}</Option>
+                </Select></Text>
+
+                
+            </div> */}
 
             <div style={{ display: 'flex', justifyContent: 'space-between', flexWrap: 'wrap'}}>
                 <Statistic loading={isFetching} style={{ minWidth: '10rem', marginBottom: '1rem' }} title="💸 Wallet Balance" value={walletBalance?.balance / 1e18} precision={10} />
@@ -150,6 +154,12 @@ const Dashboard = () => {
                 <Statistic loading={isFetching} style={{ minWidth: '10rem', marginBottom: '1rem' }} title="💠 Total Tokens" value={tokenBalances?.length} precision={0}/>
                 <Statistic loading={isFetching} style={{ minWidth: '10rem', marginBottom: '1rem' }} title="⚜️ Total NFTs" value={nfts?.length} precision={0}/>
             </div>
+
+            {/* <CountUp end={walletBalance?.balance / 1e18} duration={2} decimals={10} useEasing={true} />
+            <CountUp end={gasTotal()} duration={2}/>
+            <CountUp end={transactions?.total} duration={2}/>
+            <CountUp end={tokenBalances?.length} duration={2}/>
+            <CountUp end={nfts?.length} duration={2}/> */}
 
             {/* Change Username */}
             {/* <Button disabled={isUserUpdating} onClick={() => { 

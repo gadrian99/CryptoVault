@@ -56,7 +56,7 @@ const Homepage = () => {
             <Card style={{ marginBottom: '30px', borderRadius: '1rem'}} title={<h1>Global Crypto Stats</h1>} hoverable>
                 <Row gutter={[32,32]} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                     <Col>
-                        <Statistic title="📈 24h Change" value={dailyChange} valueStyle={Math.sign(dailyChange) ? { color: '#cf1322' } : { color: '#3f8600' }} prefix={Math.sign(dailyChange) == -1 ? <ArrowDownOutlined /> : <ArrowUpOutlined /> } suffix="%" precision={2}/>
+                        <Statistic title="📈 24h Change" value={dailyChange} valueStyle={Math.sign(dailyChange) == 1 ? { color: '#3f8600' } : { color: '#cf1322' }} prefix={Math.sign(dailyChange) == -1 ? <ArrowDownOutlined /> : <ArrowUpOutlined /> } suffix="%" precision={2}/>
                     </Col>
                     <Col>
                         <Statistic title="📊 24h Volume"value={'$' + millify(globalStats.total24hVolume)}/>
