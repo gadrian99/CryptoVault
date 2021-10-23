@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import millify from 'millify'
 import moment from 'moment'
-import { TagsTwoTone, ArrowDownOutlined, ArrowUpOutlined } from '@ant-design/icons'
+import { ArrowDownOutlined, ArrowUpOutlined } from '@ant-design/icons'
 
 import { Typography, Table } from 'antd'
 import {

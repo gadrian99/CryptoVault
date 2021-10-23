@@ -1,5 +1,8 @@
 import React, { useState }from 'react'
-import { Typography, Button, Card, Select, Tabs, message  } from 'antd'
+import {
+    useGetNativeBalanceQuery
+} from '../services/moralisApi'
+import { Typography, Button, Card, Select, Tabs, Skeleton, Statistic, message  } from 'antd'
 import { LogoutOutlined } from '@ant-design/icons'
 import { useMoralis } from "react-moralis"
 import { Transactions, UserTokens, UserNFTs } from "../components/"
@@ -12,16 +15,24 @@ const { Meta } = Card
 const { TabPane } = Tabs
 
 const Dashboard = () => {
-    const { Moralis, logout, isAuthenticated, authenticate, user, setUserData } = useMoralis()
+    const { 
+        Moralis, 
+        logout, 
+        isAuthenticated, 
+        authenticate, 
+        user, 
+        setUserData, 
+        userError, 
+        isUserUpdating, 
+        refetchUserData, 
+        isAuthenticating
+    } = useMoralis()
 
-
-    // Moralis.onDisconnect((data) => alert('disconnected from site' , data))
-    // Moralis.onConnect((data) => alert('connected to site', data))
     const [address, setAddress] = useState('')
     const [chain, setChain] = useState('0x1')
+    const { data: walletBalance, isFetching} = useGetNativeBalanceQuery({ address, chain })
+    console.log(walletBalance)
     const [totalGas, setTotalGas] = useState(0)
-    const [walletBalance, setWalletBalance] = useState('')
-    const [error, setError] = useState({})
 
     const moralisNetworks = [
         {id: '0x1', name: 'Ethereum', gecko: 'ethereum'},
@@ -36,45 +47,26 @@ const Dashboard = () => {
         {id: '0xa86a', name: 'Avalanche', gecko: 'avalanche'}
     ]
 
-    const fetchData = async () => {
-        const gasTotal = async (txs) => {
-            setTotalGas(0)
-            let x = 0
-            await txs.forEach(({receipt_cumulative_gas_used}) => {
-                x+= parseInt(receipt_cumulative_gas_used)
-            })
-            setTotalGas(x)
-        }
-
-        const options = {
-            chain: chain,
-            address: address,
-        }
-
-        // try {
-        //     await Moralis.Web3API.account.getTransactions(options)
-        //         .then((data) => setTxs(data.result))
-        //     await Moralis.Web3API.account.getTokenBalances(options)
-        //         .then((data) => setTokens(data))
-        //     await Moralis.Web3API.account.getNativeBalance({ address })
-        //         .then((data) => setWalletBalance(data.balance))
-        //     await Moralis.Web3API.account.getTokenTransfers(options)
-        //         .then((data) => setTokensTxs(data.result))
-        //     await Moralis.Web3API.account.getNFTs(options)
-        //         .then((data) => setNfts(data.result))
-        //     await gasTotal(txs)
-        // } catch (err) {
-        //     setError(err)
-        //     console.log(err)
-        // }
+    const gasTotal = async (txs) => {
+        setTotalGas(0)
+        let x = 0
+        await txs.forEach(({receipt_cumulative_gas_used}) => {
+            x+= parseInt(receipt_cumulative_gas_used)
+        })
+        setTotalGas(x)
     }
 
-     // Monitor Account change
-     Moralis.onAccountsChanged((data) => setAddress(data[0]))
+    // Monitor Account change
+    Moralis.onAccountsChanged((data) => setAddress(data[0]))
 
-     // Monitor Network Change
-     Moralis.onChainChanged((chain) => setChain(chain))
+    // Monitor Network Change
+    Moralis.onChainChanged((chain) => setChain(chain))
 
+    //Monitor Connection to site
+    Moralis.onConnect((data) => message.success('connected to site', data))
+
+    //Monitor Disconnection to site
+    Moralis.onDisconnect((data) => message.warning('Disconnected From Site' , data))
 
     // Login Screen
     if (!isAuthenticated) {
@@ -86,7 +78,7 @@ const Dashboard = () => {
                 <Button style={{ marginBottom: '15px', width: '15rem'}} type="primary" onClick={() => {
                     authenticate({
                         signingMessage:"Hello from CryptoVault :) Sign this request free of charge to authenticate.",
-                        onSuccess: () => message.success('Logged In Successfully'),
+                        onSuccess: (e) => message.success('Logged In Successfully'),
                         onError: (e) => message.error(e.message)
                     })
                 
@@ -109,11 +101,11 @@ const Dashboard = () => {
         let curHr = today.getHours()
 
         if (curHr < 12) {
-            return <Title level={3}>Good morning {user.get("username")} </Title>
+            return <Title level={3}>Good morning, {user.get("username")}</Title>
         } else if (curHr < 18) {
-            return <Title level={3}>Good afternoon {user.get("username")} </Title>
+            return <Title level={3}>Good afternoon, {user.get("username")}</Title>
         } else {
-            return <Title level={3}>Good evening {user.get("username")}</Title>
+            return <Title level={3}>Good evening, {user.get("username")}</Title>
         }
     }
 
@@ -121,14 +113,15 @@ const Dashboard = () => {
 
     return(
         <div style={{ minHeight: '80vh' }}>
+            {userError && <p>{userError.message}</p>}
             {/* executes once user logs in */}
             {address == '' &&  setAddress(user.attributes.accounts[0])}
 
             <div style={{ display: 'flex', justifyContent: 'space-between', margin: '5px 0 30px 0', alignItems: 'center' }}>
                 {greeting()}
-                <Button type="primary" onClick={() => {
+                <Button disabled={isAuthenticating} type="primary" onClick={() => {
                     logout()
-                    //test once deployed
+                    message.success('Logged Out Successfully')
                 }} danger>Logout <LogoutOutlined /></Button>
             </div>
 
@@ -137,18 +130,18 @@ const Dashboard = () => {
                     <Option value={address}>{address.substring(0,6) + "..." + address.substring(38)}</Option>
                 </Select></Text>
 
-                <Text>Current chain: <Select defaultValue={'0x1'} style={{ width: 120 }} onChange={(data) => setChain(data)}>
+                <Text>Current chain: <Select defaultValue={chain} style={{ width: 120 }} onChange={(data) => setChain(data)}>
                     {moralisNetworks.map(({id, name}) => (
                         <Option value={id}>{name}</Option>
                     ))}
                 </Select></Text>
             </div>
 
-            {/* <div style={{ display: 'flex', justifyContent: 'space-between', flexWrap: 'wrap', marginBottom: '50px' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', flexWrap: 'wrap', marginBottom: '50px' }}>
                 <Card title="💸 Wallet Balance" bordered={true} style={{ width: 300 }}>
-                    {loading ? <Skeleton paragraph={{ rows: 0 }} /> : <Statistic value={walletBalance / 1e18} precision={10} />}
+                    {isFetching ? <Skeleton paragraph={{ rows: 0 }} /> : <Statistic value={walletBalance.balance / 1e18} precision={10} />}
                 </Card>
-                <Card title="🏷️ Total Transactions" bordered={true} style={{ width: 300 }}>
+                {/* <Card title="🏷️ Total Transactions" bordered={true} style={{ width: 300 }}>
                     {loading ? <Skeleton paragraph={{ rows: 0 }} /> : <Statistic value={txs.length}/>}
                 </Card>
                 <Card title="🔥 Total Gas Burned" bordered={true} style={{ width: 300 }}>
@@ -159,8 +152,15 @@ const Dashboard = () => {
                 </Card>
                 <Card title="⚜️ Total NFTs" bordered={true} style={{ width: 300 }}>
                     {loading ? <Skeleton paragraph={{ rows: 0 }} /> : <Statistic value={nfts.length} precision={0}/>}
-                </Card>
-            </div> */}
+                </Card> */}
+            </div>
+
+            {/* Change Username */}
+            {/* <Button disabled={isUserUpdating} onClick={() => { 
+                setUserData({
+                    username: 'DPR'
+                })
+            }}>Change username</Button> */}
             
              <Tabs defaultActiveKey="1">
                 <TabPane tab="Transactions" key="1">
@@ -173,7 +173,6 @@ const Dashboard = () => {
                     <UserNFTs address={address} chain={chain}/>
                 </TabPane>
             </Tabs>
-
         </div>
     )
 
