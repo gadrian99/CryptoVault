@@ -133,7 +133,7 @@ const UserTokens = ({ address, chain }) => {
         <div>
             <Title level={4}>Tokens</Title>
             <Table loading={isFetching} dataSource={tokenChartData} columns={tokenColumns} />
-            <Title style={{ marginTop: '20px' }} level={4}>Token Transactions</Title>
+            <Title style={{ marginTop: '20px' }} level={4}>Transactions</Title>
             <Table loading={isFetching} dataSource={tokenTxData} columns={tokenTxColumns} />
         </div>
     )

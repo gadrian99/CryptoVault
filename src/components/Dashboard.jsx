@@ -39,19 +39,17 @@ const Dashboard = () => {
     const { data: tokenBalances} = useGetTokenBalancesQuery({ address, chain })
     const { data: nfts} = useGetNFTsQuery({ address, chain })
 
-    const [totalGas, setTotalGas] = useState(0)
-
     const moralisNetworks = [
-        {id: '0x1', name: 'Ethereum', gecko: 'ethereum'},
-        {id: '0x3', name: 'Ropsten',},
+        {id: '0x1', name: 'Ethereum'},
+        {id: '0x3', name: 'Ropsten'},
         {id: '0x4', name: 'Rinkeby'},
         {id: '0x5', name: 'Goerli'},
         {id: '0x2a', name: 'Kovan'},
-        {id: '0x38', name: 'Bsc', gecko: 'binance-smart-chain'},
+        {id: '0x38', name: 'Bsc'},
         {id: '0x61', name: 'Bsc Testnet'},
-        {id: '0x89', name: 'Matic', gecko: 'polygon-pos'},
+        {id: '0x89', name: 'Matic'},
         {id: '0x13881', name: 'Matic Testnet'},
-        {id: '0xa86a', name: 'Avalanche', gecko: 'avalanche'}
+        {id: '0xa86a', name: 'Avalanche'}
     ]
 
     const gasTotal = () => {
@@ -146,11 +144,11 @@ const Dashboard = () => {
             </div>
 
             <div style={{ display: 'flex', justifyContent: 'space-between', flexWrap: 'wrap'}}>
-                <Statistic style={{ minWidth: '10rem', marginBottom: '1rem' }} title="💸 Wallet Balance" value={walletBalance?.balance / 1e18} precision={10} />
-                <Statistic style={{ minWidth: '10rem', marginBottom: '1rem' }} title="🏷️ Total Transactions" value={transactions?.total}/>
-                <Statistic style={{ minWidth: '10rem', marginBottom: '1rem' }} title="🔥 Total Gas Burned" value={gasTotal()} precision={0}/>
-                <Statistic style={{ minWidth: '10rem', marginBottom: '1rem' }} title="💠 Total Tokens" value={tokenBalances?.length} precision={0}/>
-                <Statistic style={{ minWidth: '10rem', marginBottom: '1rem' }} title="⚜️ Total NFTs" value={nfts?.length} precision={0}/>
+                <Statistic loading={isFetching} style={{ minWidth: '10rem', marginBottom: '1rem' }} title="💸 Wallet Balance" value={walletBalance?.balance / 1e18} precision={10} />
+                <Statistic loading={isFetching} style={{ minWidth: '10rem', marginBottom: '1rem' }} title="🏷️ Total Transactions" value={transactions?.total}/>
+                <Statistic loading={isFetching} style={{ minWidth: '10rem', marginBottom: '1rem' }} title="🔥 Total Gas Burned" value={gasTotal()} precision={0}/>
+                <Statistic loading={isFetching} style={{ minWidth: '10rem', marginBottom: '1rem' }} title="💠 Total Tokens" value={tokenBalances?.length} precision={0}/>
+                <Statistic loading={isFetching} style={{ minWidth: '10rem', marginBottom: '1rem' }} title="⚜️ Total NFTs" value={nfts?.length} precision={0}/>
             </div>
 
             {/* Change Username */}
