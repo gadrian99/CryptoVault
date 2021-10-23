@@ -1,7 +1,11 @@
 import React, { useState }from 'react'
 import {
-    useGetNativeBalanceQuery
+    useGetNativeBalanceQuery,
+    useGetTransactionsQuery,
+    useGetTokenBalancesQuery,
+    useGetNFTsQuery
 } from '../services/moralisApi'
+import millify from 'millify'
 import { Typography, Button, Card, Select, Tabs, Skeleton, Statistic, message  } from 'antd'
 import { LogoutOutlined } from '@ant-design/icons'
 import { useMoralis } from "react-moralis"
@@ -31,7 +35,10 @@ const Dashboard = () => {
     const [address, setAddress] = useState('')
     const [chain, setChain] = useState('0x1')
     const { data: walletBalance, isFetching} = useGetNativeBalanceQuery({ address, chain })
-    console.log(walletBalance)
+    const { data: transactions} = useGetTransactionsQuery({ address, chain })
+    const { data: tokenBalances} = useGetTokenBalancesQuery({ address, chain })
+    const { data: nfts} = useGetNFTsQuery({ address, chain })
+
     const [totalGas, setTotalGas] = useState(0)
 
     const moralisNetworks = [
@@ -47,13 +54,14 @@ const Dashboard = () => {
         {id: '0xa86a', name: 'Avalanche', gecko: 'avalanche'}
     ]
 
-    const gasTotal = async (txs) => {
-        setTotalGas(0)
+    const gasTotal = () => {
         let x = 0
-        await txs.forEach(({receipt_cumulative_gas_used}) => {
+        
+        transactions?.result.forEach(({receipt_cumulative_gas_used}) => {
             x+= parseInt(receipt_cumulative_gas_used)
         })
-        setTotalGas(x)
+        
+        return x
     }
 
     // Monitor Account change
@@ -137,22 +145,12 @@ const Dashboard = () => {
                 </Select></Text>
             </div>
 
-            <div style={{ display: 'flex', justifyContent: 'space-between', flexWrap: 'wrap', marginBottom: '50px' }}>
-                <Card title="💸 Wallet Balance" bordered={true} style={{ width: 300 }}>
-                    {isFetching ? <Skeleton paragraph={{ rows: 0 }} /> : <Statistic value={walletBalance.balance / 1e18} precision={10} />}
-                </Card>
-                {/* <Card title="🏷️ Total Transactions" bordered={true} style={{ width: 300 }}>
-                    {loading ? <Skeleton paragraph={{ rows: 0 }} /> : <Statistic value={txs.length}/>}
-                </Card>
-                <Card title="🔥 Total Gas Burned" bordered={true} style={{ width: 300 }}>
-                    {loading ? <Skeleton paragraph={{ rows: 0 }} /> : <Statistic value={millify(totalGas)} precision={0}/>}
-                </Card>
-                <Card title="💠 Total Tokens" bordered={true} style={{ width: 300 }}>
-                    {loading ? <Skeleton paragraph={{ rows: 0 }} /> : <Statistic value={tokens.length} precision={0}/>}
-                </Card>
-                <Card title="⚜️ Total NFTs" bordered={true} style={{ width: 300 }}>
-                    {loading ? <Skeleton paragraph={{ rows: 0 }} /> : <Statistic value={nfts.length} precision={0}/>}
-                </Card> */}
+            <div style={{ display: 'flex', justifyContent: 'space-between', flexWrap: 'wrap'}}>
+                <Statistic style={{ minWidth: '10rem', marginBottom: '1rem' }} title="💸 Wallet Balance" value={walletBalance?.balance / 1e18} precision={10} />
+                <Statistic style={{ minWidth: '10rem', marginBottom: '1rem' }} title="🏷️ Total Transactions" value={transactions?.total}/>
+                <Statistic style={{ minWidth: '10rem', marginBottom: '1rem' }} title="🔥 Total Gas Burned" value={gasTotal()} precision={0}/>
+                <Statistic style={{ minWidth: '10rem', marginBottom: '1rem' }} title="💠 Total Tokens" value={tokenBalances?.length} precision={0}/>
+                <Statistic style={{ minWidth: '10rem', marginBottom: '1rem' }} title="⚜️ Total NFTs" value={nfts?.length} precision={0}/>
             </div>
 
             {/* Change Username */}
