@@ -5,6 +5,9 @@ import {
     useGetTokenBalancesQuery,
     useGetNFTsQuery
 } from '../services/moralisApi'
+import {
+    useGetCoinPriceQuery
+} from '../services/coinGeckoApi'
 import millify from 'millify'
 import CountUp from "react-countup"
 import { Typography, Button, Card, Select, Tabs, Statistic, message  } from 'antd'
@@ -39,6 +42,7 @@ const Dashboard = () => {
     const { data: transactions} = useGetTransactionsQuery({ address, chain })
     const { data: tokenBalances} = useGetTokenBalancesQuery({ address, chain })
     const { data: nfts} = useGetNFTsQuery({ address, chain })
+    const { data: ethPrice } = useGetCoinPriceQuery({ id: 'ethereum' })
 
     const moralisNetworks = [
         {id: '0x1', name: 'Ethereum'},
@@ -148,7 +152,8 @@ const Dashboard = () => {
             </div> */}
 
             <div style={{ display: 'flex', justifyContent: 'space-between', flexWrap: 'wrap'}}>
-                <Statistic loading={isFetching} style={{ minWidth: '10rem', marginBottom: '1rem' }} title="💸 Wallet Balance" value={walletBalance?.balance / 1e18} precision={10} />
+                <Statistic loading={isFetching} style={{ minWidth: '10rem', marginBottom: '1rem' }} title="💸 Balance" value={(walletBalance?.balance / 1e18) * ethPrice?.ethereum?.usd} precision={2} prefix="$" />
+                <Statistic loading={isFetching} style={{ minWidth: '10rem', marginBottom: '1rem' }} title="💸 Amount" value={walletBalance?.balance / 1e18} precision={10} suffix="Ξ" />
                 <Statistic loading={isFetching} style={{ minWidth: '10rem', marginBottom: '1rem' }} title="🏷️ Total Transactions" value={transactions?.total}/>
                 <Statistic loading={isFetching} style={{ minWidth: '10rem', marginBottom: '1rem' }} title="🔥 Total Gas Burned" value={gasTotal()} precision={0}/>
                 <Statistic loading={isFetching} style={{ minWidth: '10rem', marginBottom: '1rem' }} title="💠 Total Tokens" value={tokenBalances?.length} precision={0}/>
